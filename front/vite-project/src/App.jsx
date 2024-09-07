@@ -6,25 +6,20 @@ function App() {
   const [input, setInput] = useState('');
   const [captcha_input, setcaptcha_input] = useState('');
   const [randomNumber, setRandomNumber] = useState(null);
-  
+
   useEffect(() => {
     console.log('User Agent:', navigator.userAgent);
   }, []);
-  
 
   useEffect(() => {
-    fetch('http://ip-api.com/json/?fields=status,message,country,city,lat,lon,proxy,query')
+    fetch('https://api.ipapi.is/')
     .then(response => response.json())
     .then(data => {
-      if (data.status === 'fail') {
-        console.error('Error:', data.message);
-      } else {
-        console.log('IP:', data.query);
-        console.log('Country:', data.country);
-        console.log('City:', data.city);
-        console.log('Coordinates:', { latitude: data.lat, longitude: data.lon });
-        console.log('isProxy:', data.proxy);
-      }
+        console.log('IP:', data.ip);
+        console.log('Country:', data.location.country);
+        console.log('City:', data.location.city);
+        console.log('Coordinates:', { latitude: data.location.latitude, longitude: data.location.longitude });
+        console.log('isProxy:', data.is_proxy);
     })
     .catch(error => console.error('Error fetching IP data:', error));
   }, []);
@@ -68,11 +63,23 @@ function App() {
         </div>
         <div className="random-number-box">
           {randomNumber} 
+          <br />
+          {showKeypad && 
+         
+          <button 
+            type="button" 
+            className="form-section__button"
+          >
+            Verify CAPTCHA
+          </button>
+        }
         </div>
       </div>
     );
   };
   
+
+
   const handleKeyClick = (key) => {
     setcaptcha_input(prevInput => prevInput + key);
   };
