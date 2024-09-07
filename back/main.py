@@ -44,10 +44,10 @@ async def get_predictions(r:Request):
     # except Exception as e:
     #     return {"Status":"Error","result":str(e)}
     return {"Status":"Success"}
-@app.get("/captcha_image/")
-def get_captcha_image():
-    image,answer=mi.get_adv_image(0.2)
-    answer=(answer+key)%13
-    return {"Status":"Success","image":image,"answer":answer}
+# @app.get("/captcha_image/")
+# def get_captcha_image():
+#     #image,answer=mi.get_adv_image(0.2)
+#     answer=(answer+key)%13
+#     return {"Status":"Success","image":image,"answer":answer}
 if __name__ == "__main__":
     uvicorn.run(app)
