@@ -1,15 +1,14 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import './keypad.css'; 
 
 const Keypad = ({ screenValue, refresh }) => {
   const [input, setInput] = useState('');
+  const navigate = useNavigate();
 
-  const handleClick = (value) => {
-    setInput((prev) => prev + value);
-  };
-
-  const handleClear = () => {
-    setInput('');
+  const handleClick = (value) => {//handle click and submit logic
+    setInput(value);
+    
   };
 
   return (

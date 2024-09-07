@@ -6,7 +6,7 @@ const Numpad = () => {
     const [screenValue, setScreenValue] = useState('');
 
     const refresh = () => {
-        setScreenValue(Math.floor(Math.random() * 10));
+        setScreenValue(Math.floor(Math.random() * (9 - 1 + 1)) + 1);
     };
 
     useEffect(() => {

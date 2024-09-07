@@ -2,33 +2,24 @@ import React, { useEffect } from 'react';
 import Navbar from './components/Navbar'
 import Footer from './components/Footer'
 import Form from './components/Form'
+import {BrowserRouter,Routes,Route} from "react-router-dom"
+import SortingTask from './TasksList/SortingTask'
+import ColorSelectionTask from './TasksList/ColorSelectionTask'
 import './App.css';
 
 function App() {
 
-  useEffect(() => {
-    console.log('User Agent:', navigator.userAgent);
-  }, []);
-
-
-  useEffect(() => {
-    fetch('https://api.ipapi.is/')
-    .then(response => response.json())
-    .then(data => {
-        console.log('IP:', data.ip);
-        console.log('Country:', data.location.country);
-        console.log('City:', data.location.city);
-        console.log('Coordinates:', { latitude: data.location.latitude, longitude: data.location.longitude });
-        console.log('isProxy:', data.is_proxy);
-    })
-    .catch(error => console.error('Error fetching IP data:', error));
-  }, []);
-  
-
   return (
     <>
       <Navbar/>
-      <Form/>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element = {<Form/>}/>
+          <Route path="/task" element = {<SortingTask/>}/>
+          <Route path="/task2" element = {<ColorSelectionTask/>}/>
+        </Routes>
+     </BrowserRouter>
+     
       <Footer/>
     </>
   )
