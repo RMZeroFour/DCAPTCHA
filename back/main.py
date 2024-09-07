@@ -1,10 +1,10 @@
 from datetime import datetime
 from starlette.requests import Request
-
 import model_inference as mi
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
+key=7
 app = FastAPI(debug = True)
 app.add_middleware(
     CORSMiddleware,
@@ -36,5 +36,10 @@ async def get_predictions(r:Request):
             return {"Status":"Success","result":"Bot"}
     except Exception as e:
         return {"Status":"Error","result":str(e)}
+@app.get("/captcha_image/")
+def get_captcha_image():
+    image,answer=mi.get_adv_image(0.2)
+    answer=(answer+key)%13
+    return {"Status":"Success","image":image,"answer":answer}
 if __name__ == "__main__":
     uvicorn.run(app)
