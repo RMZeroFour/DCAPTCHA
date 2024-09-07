@@ -6,12 +6,7 @@ const Keypad = () => {
 
   
   const handleClick = (value) => {
-    setInput((prev) => prev + value);
-  };
-
-  // Function to handle the "X" button (clear screen)
-  const handleClear = () => {
-    setInput((prev) =>  prev.substring(0, prev.length - 1));
+    setInput(value);
   };
 
   // Function to Submit value entered by user

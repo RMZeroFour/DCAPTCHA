@@ -11,7 +11,8 @@ const Numpad = ()=> {
               <div className="numpad-left">
                 <p>Enter the given number:</p>
                 <div className="num-box">
-                    <p>{Math.floor(Math.random() * 10)}</p>
+                    {/* Generate Random Number from 1 to 9*/}
+                    <p>{ Math.floor(Math.random() * (9 - 1 + 1)) + 1}</p> 
                 </div>
               </div>
               

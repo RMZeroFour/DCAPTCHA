@@ -12,6 +12,7 @@ const ColorSelectionTask = () => {
 
   // Function to shuffle and color random boxes
   const generateShuffledGrid = () => {
+    setMessage(null);
     const gridArray = Array(gridSize).fill(false);
     const coloredIndices = new Set();
 
