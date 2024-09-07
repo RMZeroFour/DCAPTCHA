@@ -11,12 +11,12 @@ const Keypad = () => {
 
   // Function to handle the "X" button (clear screen)
   const handleClear = () => {
-    setInput('');
+    setInput((prev) =>  prev.substring(0, prev.length - 1));
   };
 
   // Function to Submit value entered by user
   const submitData = ()=> {
-
+      console.log("Data Submit : " + input)
   }
 
   return (
@@ -29,12 +29,10 @@ const Keypad = () => {
       {/* Numpad Buttons */}
       <div className="numpad-buttons">
         {['1', '2', '3', '4', '5', '6', '7', '8', '9'].map((num) => (
-          <button key={num} onClick={() => handleClick(num)}>
+          <button key={num}  className='numpad-btn' onClick={() => handleClick(num)}>
             {num}
           </button>
         ))}
-        <button onClick={() => handleClick('0')}>0</button>
-        <button onClick={handleClear}>X</button>
       </div>
     </div>
     

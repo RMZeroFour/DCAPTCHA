@@ -23,7 +23,7 @@ const Form = () => {
             }} className="submit-button" type="button">Verify as Human </button>
           </div>)
          }
-
+         
         
         </div>
          
