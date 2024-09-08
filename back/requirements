@@ -2,3 +2,10 @@ datetime
 fastapi
 uvicorn
 pymongo
+numpy
+sklearn
+xgboost
+catboost
+tensorflow
+torch
+torchvision
