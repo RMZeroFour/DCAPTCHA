@@ -42,6 +42,10 @@ const Form = () => {
     const startTime = useRef(null);
 
     useEffect(() => {
+       startTime.current = Date.now();
+    }, []);
+
+    useEffect(() => {
         const handleMouseMove = (event) => {
             const { clientX, clientY } = event;
 
@@ -56,17 +60,11 @@ const Form = () => {
             lastPosition.current = { x: clientX, y: clientY };
         };
 
-        const handleLoad = () => {
-            startPosition.current = { x: lastPosition.current.x, y: lastPosition.current.y };
-            startTime.current = Date.now();
-        };
-
+	startPosition.current = { x: lastPosition.current.x, y: lastPosition.current.y };
         window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('load', handleLoad);
 
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('load', handleLoad);
         };
     }, []);
 
