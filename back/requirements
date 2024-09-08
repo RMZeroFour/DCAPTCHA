@@ -1,3 +1,5 @@
+dotenv
+PIL
 datetime
 fastapi
 uvicorn
@@ -9,3 +11,4 @@ catboost
 tensorflow
 torch
 torchvision
+matplotlib
