@@ -68,6 +68,5 @@ async def get_captcha_image():
         "image": data_uri,
         "answer": answer
     }
-
 if __name__ == "__main__":
     uvicorn.run(app)
