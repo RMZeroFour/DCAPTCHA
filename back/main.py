@@ -47,7 +47,6 @@ async def get_predictions(req: Request):
             return {"Status": "Success", "result": "Bot"}
     except Exception as e:
         return {"Status": "Error", "message": str(e)}
-
 @app.get("/captcha_image/")
 async def get_captcha_image():
     answer = 0
