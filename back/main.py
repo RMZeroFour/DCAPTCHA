@@ -33,11 +33,10 @@ async def root():
 
 @app.post("/predict/")
 async def get_predictions(req: Request):
-    try:
+    try :
         data = await req.json()
         time_taken = data['time_taken']
         typing_speed = data['typing_speed']
-        mouse_movement = data['mouse_movement']
         mouse_distance = data['mouse_distance']
         country = data['country']
         city = data['city']
@@ -47,7 +46,7 @@ async def get_predictions(req: Request):
         users_collection = db.sih_level_1
         users_collection.insert_one(data)
         result = mi.model_inference(
-            time_taken, typing_speed, mouse_movement, mouse_distance, country, city, is_proxy)
+            time_taken, typing_speed, mouse_distance, country, city, is_proxy)
         if result > 0.7:
             return {"Status": "Success", "result": "Human"}
         elif 0.7 >= result >= 0.3:
@@ -55,7 +54,7 @@ async def get_predictions(req: Request):
         else:
             return {"Status": "Success", "result": "Bot"}
     except Exception as e:
-        return {"Status": "Error", "result": str(e)}
+        return {"Status": "Error", "message": str(e)}
 
 @app.get("/captcha_image/")
 async def get_captcha_image():

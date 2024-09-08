@@ -31,25 +31,25 @@ def gate_nn():
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     return model
 NN_MODEL = neural_model()
-NN_MODEL.load_weights('model\demo_weights_neural.weights.h5')
+NN_MODEL.load_weights('../model/demo_weights_neural.weights.h5')
 XGB_MODEL = xgb.XGBClassifier()
-XGB_MODEL.load_model('model\demo_weights_xgboost.json')
+XGB_MODEL.load_model('../model/demo_weights_xgboost.json')
 CAT_MODEL = CatBoostClassifier()
-CAT_MODEL.load_model('model\demo_weights_catboost.json')
+CAT_MODEL.load_model('../model/demo_weights_catboost.json')
 GATE_MODEL =gate_nn()
-GATE_MODEL.load_weights('model\demo_weights_gate.weights.h5')
+GATE_MODEL.load_weights('../model/demo_weights_gate.weights.h5')
 
 COUNTRY_ENCODER = LabelEncoder()
-COUNTRY_ENCODER.classes_ = joblib.load('model\country_label_encoder.joblib',allow_pickle=True)
+COUNTRY_ENCODER.classes_ = np.load('../model/country_label_encoder.joblib',allow_pickle=True)
 CITY_ENCODER = LabelEncoder()
-CITY_ENCODER.classes_ = np.load('model\city_label_encoder.joblib',allow_pickle=True)
+CITY_ENCODER.classes_ = np.load('../model/city_label_encoder.joblib',allow_pickle=True)
 PROXY_ENCODER = LabelEncoder()
-PROXY_ENCODER.classes_ = np.load('model\proxy_label_encoder.joblib',allow_pickle=True)
-def model_inference(time_taken,typing_speed,mouse_movement,mouse_distance,country,city,is_proxy):
+PROXY_ENCODER.classes_ = np.load('../model/proxy_label_encoder.joblib',allow_pickle=True)
+def model_inference(time_taken,typing_speed,mouse_distance,country,city,is_proxy):
     country = COUNTRY_ENCODER.transform([country])[0]
     city = CITY_ENCODER.transform([city])[0]
     is_proxy = PROXY_ENCODER.transform([is_proxy])[0]
-    data = np.array([time_taken,typing_speed,mouse_movement,mouse_distance,country,city,is_proxy]).reshape(1,7)
+    data = np.array([time_taken,typing_speed,mouse_distance,country,city,is_proxy]).reshape(1,6)
     nn_pred = NN_MODEL.predict(data)
     xgb_pred = XGB_MODEL.predict_proba(data)
     cat_pred = CAT_MODEL.predict_proba(data)
@@ -81,9 +81,9 @@ class Net(nn.Module):
         x = self.fc2(x)
         output = F.log_softmax(x, dim=1)
         return output
-DATA_LOADER = torch.utils.data.DataLoader(datasets.MNIST('model', train=False, transform=transforms.Compose([transforms.ToTensor(),transforms.Normalize((0.1307,), (0.3081,)),])),batch_size=1, shuffle=True)
+DATA_LOADER = torch.utils.data.DataLoader(datasets.MNIST('../model/', train=False, transform=transforms.Compose([transforms.ToTensor(),transforms.Normalize((0.1307,), (0.3081,)),])),batch_size=1, shuffle=True)
 LENET_MODEL = Net()
-LENET_MODEL.load_state_dict(torch.load('model\lenet_mnist_model.pth.pt', weights_only=False, map_location=torch.device('cpu')))
+LENET_MODEL.load_state_dict(torch.load('../model//lenet_mnist_model.pth.pt', weights_only=False, map_location=torch.device('cpu')))
 LENET_MODEL.eval()
 def fgsm_attack(image, epsilon, data_grad):
     sign_data_grad = data_grad.sign()
