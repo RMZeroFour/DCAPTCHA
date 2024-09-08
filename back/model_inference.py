@@ -8,9 +8,10 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 from torchvision import datasets, transforms
+import joblib
 def neural_model():
     model=tf.keras.Sequential([
-        layers.InputLayer(shape=(7,)),
+        layers.InputLayer(shape=(6,)),
         layers.Dense(32),
         layers.Dense(16, activation='relu'),
         layers.Dense(8),
@@ -30,20 +31,20 @@ def gate_nn():
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     return model
 NN_MODEL = neural_model()
-NN_MODEL.load_weights('D:\DCAPTCHA\model\demo_weights_neural.weights.h5')
+NN_MODEL.load_weights('model\demo_weights_neural.weights.h5')
 XGB_MODEL = xgb.XGBClassifier()
-XGB_MODEL.load_model('D:\DCAPTCHA\model\demo_weights_xgboost.json')
+XGB_MODEL.load_model('model\demo_weights_xgboost.json')
 CAT_MODEL = CatBoostClassifier()
-CAT_MODEL.load_model('D:\DCAPTCHA\model\demo_weights_catboost.json')
+CAT_MODEL.load_model('model\demo_weights_catboost.json')
 GATE_MODEL =gate_nn()
-GATE_MODEL.load_weights('D:\DCAPTCHA\model\demo_weights_gate.weights.h5')
+GATE_MODEL.load_weights('model\demo_weights_gate.weights.h5')
 
 COUNTRY_ENCODER = LabelEncoder()
-COUNTRY_ENCODER.classes_ = np.load('D:\DCAPTCHA\model\country_label_enc.npy',allow_pickle=True)
+COUNTRY_ENCODER.classes_ = joblib.load('model\country_label_encoder.joblib',allow_pickle=True)
 CITY_ENCODER = LabelEncoder()
-CITY_ENCODER.classes_ = np.load('D:\DCAPTCHA\model\city.npy',allow_pickle=True)
+CITY_ENCODER.classes_ = np.load('model\city_label_encoder.joblib',allow_pickle=True)
 PROXY_ENCODER = LabelEncoder()
-PROXY_ENCODER.classes_ = np.load('D:\DCAPTCHA\model\isProxy.npy',allow_pickle=True)
+PROXY_ENCODER.classes_ = np.load('model\proxy_label_encoder.joblib',allow_pickle=True)
 def model_inference(time_taken,typing_speed,mouse_movement,mouse_distance,country,city,is_proxy):
     country = COUNTRY_ENCODER.transform([country])[0]
     city = CITY_ENCODER.transform([city])[0]
@@ -80,9 +81,9 @@ class Net(nn.Module):
         x = self.fc2(x)
         output = F.log_softmax(x, dim=1)
         return output
-DATA_LOADER = torch.utils.data.DataLoader(datasets.MNIST('D:\DCAPTCHA\model', train=False, transform=transforms.Compose([transforms.ToTensor(),transforms.Normalize((0.1307,), (0.3081,)),])),batch_size=1, shuffle=True)
+DATA_LOADER = torch.utils.data.DataLoader(datasets.MNIST('model', train=False, transform=transforms.Compose([transforms.ToTensor(),transforms.Normalize((0.1307,), (0.3081,)),])),batch_size=1, shuffle=True)
 LENET_MODEL = Net()
-LENET_MODEL.load_state_dict(torch.load('D:\DCAPTCHA\model\lenet_mnist_model.pth.pt', weights_only=False, map_location=torch.device('cpu')))
+LENET_MODEL.load_state_dict(torch.load('model\lenet_mnist_model.pth.pt', weights_only=False, map_location=torch.device('cpu')))
 LENET_MODEL.eval()
 def fgsm_attack(image, epsilon, data_grad):
     sign_data_grad = data_grad.sign()
