@@ -1,11 +1,11 @@
-dotenv
+python-dotenv
 PIL
 datetime
 fastapi
 uvicorn
 pymongo
 numpy
-sklearn
+scikit-learn
 xgboost
 catboost
 tensorflow
