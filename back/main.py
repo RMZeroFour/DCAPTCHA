@@ -1,22 +1,18 @@
 from datetime import datetime
-from dotenv import dotenv_values
+from os import environ
 from starlette.requests import Request
 import model_inference as mi
-from pymongo import MongoClient
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from PIL import Image
-from io import BytesIO
 import numpy as np
 import base64
 import uvicorn
 import matplotlib.pyplot as plt
 
-config = dotenv_values('.env')
-mongo_url = config['MONGO_URI']
-cipher_key = int(config['CIPHER_KEY'])
-cipher_mod = int(config['CIPHER_MOD'])
-captcha_digits = int(config['CAPTCHA_DIGITS'])
+
+cipher_key = int(environ['CIPHER_KEY'])
+cipher_mod = int(environ['CIPHER_MOD'])
+captcha_digits = int(environ['CAPTCHA_DIGITS'])
 
 app = FastAPI(debug=True)
 app.add_middleware(
@@ -41,10 +37,6 @@ async def get_predictions(req: Request):
         country = data['country']
         city = data['city']
         is_proxy = data['is_proxy']
-        client = MongoClient(mongo_url)
-        db = client.sih
-        users_collection = db.sih_level_1
-        users_collection.insert_one(data)
         result = mi.model_inference(
             time_taken, typing_speed, mouse_distance, country, city, is_proxy)
         if result > 0.7:

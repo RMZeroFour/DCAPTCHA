@@ -1,9 +1,6 @@
-python-dotenv
-PIL
 datetime
 fastapi
 uvicorn
-pymongo
 numpy
 scikit-learn
 xgboost

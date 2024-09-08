@@ -100,6 +100,7 @@ def denorm(batch, mean=[0.1307], std=[0.3081]):
         std = torch.tensor(std)
 
     return batch * std.view(1, -1, 1, 1) + mean.view(1, -1, 1, 1)
+
 def get_adv_image(epsilon):
     image,image_label=get_image()
     image = torch.tensor(image).unsqueeze(0)
