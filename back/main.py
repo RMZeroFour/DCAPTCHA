@@ -9,10 +9,7 @@ import base64
 import uvicorn
 import matplotlib.pyplot as plt
 
-
-cipher_key = int(environ['CIPHER_KEY'])
-cipher_mod = int(environ['CIPHER_MOD'])
-captcha_digits = int(environ['CAPTCHA_DIGITS'])
+captcha_digits = 3
 
 app = FastAPI(debug=True)
 app.add_middleware(
@@ -39,24 +36,27 @@ async def get_predictions(req: Request):
         is_proxy = data['is_proxy']
         result = mi.model_inference(
             time_taken, typing_speed, mouse_distance, country, city, is_proxy)
-        if result > 0.7:
-            return {"Status": "Success", "result": "Human"}
-        elif 0.7 >= result >= 0.3:
+        if result > 0.8:
+            print(result)
+            return {"Status": "Success", "result": "Bot"}
+        elif 0.8 >= result >= 0.2:
+            print(result)
             return {"Status": "Success", "result": "Not Sure"}
         else:
-            return {"Status": "Success", "result": "Bot"}
+            print(result)
+            return {"Status": "Success", "result": "Human"}
     except Exception as e:
         return {"Status": "Error", "message": str(e)}
 @app.get("/captcha_image/")
 async def get_captcha_image():
-    answer = 0
+    answer = ''
     for _ in range(captcha_digits):
         img, ans = mi.get_adv_image(0.2)
         if _ == 0:
             image=np.array(img[0])
         else :
             image=np.hstack((image, np.array(img[0])))
-        answer = (answer * 10) + ((ans + cipher_key) % cipher_mod)
+        answer+=str(ans)
     plt.imsave("captcha.png", image, cmap='gray')
     with open("captcha.png", "rb") as png_file:
         png_data = png_file.read()
