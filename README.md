@@ -71,7 +71,7 @@ The problems will be chosen which can be solved by majority indians deduced by a
 
 ### Built With
 
-* Node JS - [node.js](https://nodejs.org/en/about)
+
 * React - [react.dev](https://react.dev/)
 * Vite JS - [vitejs.dev](https://vitejs.dev/)
 * PyTorch - [pytorch.org](https://pytorch.org/)
@@ -89,7 +89,6 @@ This project requires the following npm packages:
 
 #### Backend
 
-- **[express](https://www.npmjs.com/package/express)**: Web framework for Node.js.
 - **[fastapi](https://fastapi.tiangolo.com/)**: For creating amd using the apis.
 - **[dotenv](https://www.npmjs.com/package/dotenv)**: For managing environment variables.
 
@@ -97,6 +96,7 @@ This project requires the following npm packages:
 
 - **[react](https://www.npmjs.com/package/react)**: Frontend library for building user interfaces.
 - **[react-dom](https://www.npmjs.com/package/react-dom)**: For DOM-related rendering.
+- **[CSS]**: For styling web pages.
 - **[vite](https://www.npmjs.com/package/vite)**: Build tool for faster development.
 
 
