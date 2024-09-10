@@ -95,8 +95,8 @@ This project requires the following npm packages:
 #### Frontend
 
 - **[react](https://www.npmjs.com/package/react)**: Frontend library for building user interfaces.
-- **[react-dom](https://www.npmjs.com/package/react-dom)**: For DOM-related rendering.
-- **[CSS]**: For styling web pages.
+- **[react-router-dom](https://www.npmjs.com/package/react-router-dom)**: For dynamic routing.
+- **[CSS](https://www.w3schools.com/css/)**: For styling web pages.
 - **[vite](https://www.npmjs.com/package/vite)**: Build tool for faster development.
 
 
