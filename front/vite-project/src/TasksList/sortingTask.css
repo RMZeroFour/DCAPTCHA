@@ -1,0 +1,51 @@
+.task-Wrapper{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 400px;
+    width: 700px;
+    
+   
+}
+
+.grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 10px;
+    width: 150px;
+    height: 150px;
+    margin-top: 20px;
+}
+
+.grid-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 70px;
+    height: 70px;
+    background-color: lightgray;
+    border: 2px solid #000;
+    font-size: 30px;
+    font-weight: 550;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.grid-item.clicked {
+    background-color: rgb(19, 156, 19);
+    color: white;
+    cursor: not-allowed;
+}
+
+h2 {
+    margin-left: 70px;
+    font-size: 20px;
+}

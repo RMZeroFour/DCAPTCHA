@@ -1,0 +1,50 @@
+.custom-Wrapper{
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.custom-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+  }
+  
+  .custom-grid-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 6x6 grid */
+    grid-template-rows: repeat(3, 1fr);
+   
+    width: 300px;
+    height: 300px;
+  }
+  
+  .custom-grid-item {
+    width: 100px;
+    height: 100px;
+
+    background-color: lightgray;
+    border: 1px solid #000;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .custom-grid-item.custom-colored {
+    background-color: #FA8072; /* Colored boxes */
+  }
+  
+  .custom-container button {
+    padding: 10px 20px;
+    margin-top: 20px;
+    color: white;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 16px;
+    background-image: linear-gradient(to right, rgb(2, 13, 81), rgb(25, 176, 220));
+  }
+  
+  
+  

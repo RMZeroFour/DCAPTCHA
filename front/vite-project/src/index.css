@@ -1,0 +1,189 @@
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-family: sans-serif;
+}
+
+.navbar{
+    background-color: #fff;
+    border-bottom: 2px solid #020b50;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+    padding: 6px 16px;
+    height: 70px;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 5;
+}
+.logo-left{
+  display: flex;
+  align-items: center;
+  margin-left: 120px;
+  max-width: 70%;
+}
+.logo-right{
+    align-items: center;
+    display: flex;
+    margin-right: 120px;
+    max-width: 20%;
+}
+/*-----------------FOOTER---------------------------------------------------*/
+.footer {
+  background-color: #020348;
+  bottom: 0;
+  height: auto;
+  left: 0;
+  padding-bottom: .9rem;
+  padding-top: .9rem;
+  position: fixed;
+  width: 100%;
+  z-index: 5;
+}
+.copyright-text {
+  color: #fff;
+  font-size: 1rem;
+  margin: auto;
+  padding: .5rem;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: normal;
+}
+
+/*-------------------------LOGIN-------------------------------------------*/
+.login{
+    margin-bottom: 80px;
+    margin-top: 80px;
+    padding: 10px;
+}
+.login-desc{
+    color: #020b50;
+    font-weight: 600;
+    padding: 5px 10px;
+    text-align: center;
+}
+.login-card{
+    border-radius: 6px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    box-shadow: 0 2px 5px -1px #32325d40, 0 1px 3px -1px #0000004d;
+    margin: auto;
+    max-width: 400px;
+    overflow: hidden;
+    padding: 20px 16px;
+    position: relative;
+    width: 100%;
+}
+.login-card::before{
+  background: linear-gradient(119.54deg, #000046, #1cb5e0);
+    content: "";
+    height: 5px;
+    left: 0;
+    position: absolute;
+    top: 0;
+    width: 100%;
+}
+/*-----------------Enter Aadhar Field--------------------------------------------------*/
+.formX {
+  top:0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding-top: 10px;
+  transition: all .8s;
+}
+.place {
+    color: rgb(92, 89, 88);
+    font-size: 20px;
+    font-family: inherit;
+    bottom: 8px;
+    transition: 0.3s ease-in;
+    transform-origin: left top;
+    width: 100%;
+    height: 35px;
+}
+
+/*-----------------------Verify as Human-------------------------------------------*/
+.btn-container{
+    height: 42px;
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    margin: 5px 0;
+    margin-top: 20px;
+
+}
+.submit-button{
+  
+  font-weight: bold;
+  color: white;
+  background-image: linear-gradient(to right, rgb(2, 13, 81), rgb(25, 176, 220));
+    align-items: center;
+    align-self: center;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    display: inline-flex;
+    font-family: sans-serif;
+    font-size: 1rem;
+    font-weight: 400;
+    height: 40px;
+    justify-content: center;
+    outline: 0;
+    
+    text-align: center;
+    text-transform: capitalize;
+    transition: all .1s linear;
+    width: 100%;
+}
+
+/*-------------------Numpad-------------------------------------------*/
+.numpad{
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+/*--------------------Numpad Left---------------------------*/
+.numpad-left{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+
+}
+.num-box{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.5rem;
+  background-color: #E0E0E0;
+  height:80px;
+  width: 100%;
+  border-radius: 5px;
+  margin-top: 10px;
+}
+/*--------------------Numpad Right---------------------------*/
+.numpad-right{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-evenly;
+  width: 50%
+
+}
+.screen{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color:  #E0E0E0;
+  width: 100%;
+  height: 30px;
+  border-radius: 5px ;
+  border: 2px solid black;
+}
