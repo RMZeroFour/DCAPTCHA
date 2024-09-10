@@ -53,6 +53,7 @@ async def get_captcha_image():
     for _ in range(captcha_digits):
         img, ans = mi.get_adv_image(0.2)
         if _ == 0:
+
             image=np.array(img[0])
         else :
             image=np.hstack((image, np.array(img[0])))
