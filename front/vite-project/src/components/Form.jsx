@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from "react";
 import "../index.css";
 import Numpad from "./Numpad";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const Form = () => {
     const [time_taken, setTime_taken] = useState(0);
@@ -15,6 +16,7 @@ const Form = () => {
     const [input, setInput] = useState('');
     const typingStart = useRef(null);
     const typingTimer = useRef(null);  
+    const navigate = useNavigate();
 
     useEffect(() => {
         console.log('User Agent:', navigator.userAgent);
@@ -28,7 +30,7 @@ const Form = () => {
                 console.log('Country:', data.location.country);
                 setCountry(data.location.country);
                 console.log('City:', data.location.city);
-                setCity(data.location.city);
+                setCity('Delhi');
                 console.log('Coordinates:', { latitude: data.location.latitude, longitude: data.location.longitude });
                 console.log('isProxy:', data.is_proxy);
                 setIs_proxy(data.is_proxy);
@@ -40,6 +42,10 @@ const Form = () => {
     const startPosition = useRef(null);
     const lastPosition = useRef({ x: 0, y: 0 });
     const startTime = useRef(null);
+
+    useEffect(() => {
+       startTime.current = Date.now();
+    }, []);
 
     useEffect(() => {
         const handleMouseMove = (event) => {
@@ -56,17 +62,11 @@ const Form = () => {
             lastPosition.current = { x: clientX, y: clientY };
         };
 
-        const handleLoad = () => {
-            startPosition.current = { x: lastPosition.current.x, y: lastPosition.current.y };
-            startTime.current = Date.now();
-        };
-
+	startPosition.current = { x: lastPosition.current.x, y: lastPosition.current.y };
         window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('load', handleLoad);
 
         return () => {
             window.removeEventListener('mousemove', handleMouseMove);
-            window.removeEventListener('load', handleLoad);
         };
     }, []);
 
@@ -119,8 +119,8 @@ const Form = () => {
                 mouse_movement,
                 mouse_distance,
                 country,
-                city,
-                is_proxy
+                city: 'Delhi',
+                is_proxy 
             });
             console.log('POST Response:', response.data);
         } catch (error) {
@@ -134,6 +134,40 @@ const Form = () => {
         }
     }, [time_taken, typing_speed, mouse_distance, mouse_movement, country, city, is_proxy]);
 
+    const handleClick = async ()=>{
+        const response = await axios.post('http://127.0.0.1:8000/predict/',
+            {
+                time_taken: Number(time_taken),
+                typing_speed: Number(typing_speed),
+                mouse_distance: Number(mouse_distance),
+                country,
+                city: 'Delhi',
+                is_proxy : String(is_proxy)
+            });
+        console.log(response.data, typeof(response.data));
+        if(response.data.result == "Bot")
+        {
+            alert('BOT DETECTED');        
+        }
+        else if(response.data.result == "Not Sure")
+        {
+            alert('Not Sure');
+            setNumpad(true);
+        }
+        else if(response.data.result == "Human")
+        {
+            alert('Human detected');
+            //setNumpad(true);
+            navigate('/home');
+        }
+    }
+
+    /*useEffect(() => {
+            if (time_taken && typing_speed && mouse_distance && country && city !== '') {
+                handleClick();
+            }
+        }, [time_taken, typing_speed, mouse_distance, country, city, is_proxy]);
+*/
     return (
         <>
             <div className="login">
@@ -147,8 +181,9 @@ const Form = () => {
                     {numpad ? <Numpad /> : (
                         <div className="btn-container">
                             <button onClick={() => {
-                                setNumpad(true);
+                               // setNumpad(true);
                                 handleSignInClick();
+                                handleClick();
                             }} className="submit-button" type="button">Verify as Human</button>
                         </div>
                     )}
