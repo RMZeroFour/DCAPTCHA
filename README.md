@@ -89,15 +89,14 @@ This project requires the following npm packages:
 
 #### Backend
 
-- **[fastapi](https://fastapi.tiangolo.com/)**: For creating amd using the apis.
+- **[FastApi](https://fastapi.tiangolo.com/)**: For creating amd using the apis.
 - **[dotenv](https://www.npmjs.com/package/dotenv)**: For managing environment variables.
 
 #### Frontend
 
-- **[react](https://www.npmjs.com/package/react)**: Frontend library for building user interfaces.
+- **[React.js](https://www.npmjs.com/package/react)**: Frontend library for building user interfaces.
 - **[react-router-dom](https://www.npmjs.com/package/react-router-dom)**: For dynamic routing.
-- **[CSS](https://www.w3schools.com/css/)**: For styling web pages.
-- **[vite](https://www.npmjs.com/package/vite)**: Build tool for faster development.
+- **[Vite](https://www.npmjs.com/package/vite)**: Build tool for faster development.
 
 
 ### Installation
