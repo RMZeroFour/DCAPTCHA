@@ -1,0 +1,31 @@
+.page {
+  flex-grow: 1;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  background: rgb(29, 29, 143);
+  background: linear-gradient(90deg, rgb(29, 29, 143) 0%, rgb(6, 169, 202) 100%);
+}
+
+.largeText {
+  margin: 8px;
+
+  font-size: 8rem;
+  color: white;
+}
+
+.smallText {
+  margin: 0px;
+
+  font-size: 1rem;
+  color: white;
+}
+
+.returnLink {
+  font-size: 1rem;
+  color: white;
+  text-align: center;
+}

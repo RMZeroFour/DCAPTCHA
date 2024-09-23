@@ -1,0 +1,80 @@
+.formDiv {
+  padding: 16px;
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  align-items: stretch;
+}
+
+.leftDiv {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+}
+
+.captionText {
+  margin: 0px;
+  
+  color: rgb(29, 29, 143);
+}
+
+.controlsDiv {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+.captchaImg {
+  margin: 0px;
+  width: 168px;
+}
+
+.spacer {
+  min-width: 16px;
+  min-height: 16px;
+}
+
+.captchaInp {
+  padding: 4px;
+
+  font-size: 1rem;
+}
+
+.numbersDiv {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 4px
+}
+
+.coloredBtn {
+  padding: 8px;
+
+  border: none;
+  border-radius: 4px;
+
+  font-size: 1rem;
+
+  color: white;
+  background: rgb(29, 29, 143);
+  background: linear-gradient(90deg, rgb(29, 29, 143) 0%, rgb(6, 169, 202) 100%);
+
+  cursor: pointer;
+}
+
+.numberBtn {
+  padding: 4px;
+
+  border: none;
+  border-radius: 4px;
+
+  font-size: 1rem;
+
+  color: white;
+  background: rgb(29, 29, 143);
+  background: linear-gradient(90deg, rgb(29, 29, 143) 0%, rgb(6, 169, 202) 100%);
+
+  cursor: pointer;
+}

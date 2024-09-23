@@ -1,0 +1,13 @@
+.bar {
+  padding: 8px 8%;
+
+  display: flex;
+  justify-content: space-between;
+
+  border: 1px black;
+  border-style: solid none;
+}
+
+.spacer {
+  flex: 1;
+}
