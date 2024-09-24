@@ -1,10 +1,12 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { PageLayout } from './pages/PageLayout.jsx';
+import { AdminPage } from './pages/AdminPage.jsx';
+import { BotPage } from './pages/BotPage.jsx';
+import { DashPage } from './pages/DashPage.jsx';
+import { ErrorPage } from './pages/ErrorPage.jsx';
 import { FormPage } from './pages/FormPage.jsx';
 import { HomePage } from './pages/HomePage.jsx';
 import { HumanPage } from './pages/HumanPage.jsx';
-import { BotPage } from './pages/BotPage.jsx';
-import { ErrorPage } from './pages/ErrorPage.jsx';
 
 const pageRouter = createBrowserRouter([
   {
@@ -26,6 +28,14 @@ const pageRouter = createBrowserRouter([
       {
         path: 'bot',
         element: <BotPage />
+      },
+      {
+        path: 'admin',
+        element: <AdminPage />
+      },
+      {
+        path: 'dash',
+        element: <DashPage />
       },
       {
         path: '*',

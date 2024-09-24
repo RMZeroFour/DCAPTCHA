@@ -30,8 +30,8 @@ export function FormPage() {
     }
   }
 
-  function mapLayerToElement(layer) {
-    switch (layer) {
+  function mapIndexToLayer(index) {
+    switch (index) {
       case 1: return <AadharEntry onSubmit={handleSubmitAadhar} />;
       case 2: return <NumpadCaptcha onSubmit={handleSubmitNumpad} />;
       case 3: return <RandomTaskPicker onSubmit={handleSubmitTask} />;
@@ -41,8 +41,8 @@ export function FormPage() {
   return (
     <div className={styles.page}>
       <div className={styles.topSpacer} />
-      <p className={styles.captionText}><strong>Login to myAadhar</strong></p>
-      <div className={styles.formBorder}>{mapLayerToElement(currentLayer)}</div>
+      <p className={styles.captionText}><strong>Login to myAadhar Portal</strong></p>
+      <div className={styles.formBorder}>{mapIndexToLayer(currentLayer)}</div>
       <div className={styles.bottomSpacer} />
     </div>
   );
