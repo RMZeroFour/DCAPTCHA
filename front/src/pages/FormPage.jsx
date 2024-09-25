@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useStopwatch } from '../hooks/Stopwatch.jsx';
 import { useMouseDistance } from '../hooks/MouseDistance.jsx';
-import { useGeolocationData } from '../hooks/GeolocationData.jsx';
+import { useGeolocation } from '../hooks/Geolocation.jsx';
 import { AadharEntry } from '../components/AadharEntry.jsx';
 import { NumpadCaptcha } from '../components/NumpadCaptcha.jsx';
 import { RandomTaskPicker } from '../components/RandomTaskPicker.jsx';
@@ -9,20 +10,30 @@ import styles from './FormPage.module.css';
 
 export function FormPage() {
   const navigate = useNavigate();
+  const stopwatch = useStopwatch();
   const mouseDistance = useMouseDistance();
-  const geolocationData = useGeolocationData();
+  const geolocation = useGeolocation();
   const [currentLayer, setCurrentLayer] = useState(1);
 
-  function handleSubmitAadhar(typingSpeed, formTimeTaken, aadharText) {
-    console.log({ typingSpeed, formTimeTaken, aadharText, mouseDistance, geolocationData });
+  useEffect(() => {
+    stopwatch.start();
+  }, []);
+
+  function handleSubmitAadhar(typingSpeed) {
+    const timeTaken = stopwatch.readAndRestart();
+    console.log({ layer: 'Layer 1', typingSpeed, timeTaken, mouseDistance, geolocationData: geolocation });
     setCurrentLayer(2);
   }
 
   function handleSubmitNumpad() {
+    const timeTaken = stopwatch.readAndRestart();
+    console.log({ layer: 'Layer 2', timeTaken, mouseDistance, geolocationData: geolocation });
     setCurrentLayer(3);
   }
 
   function handleSubmitTask() {
+    const timeTaken = stopwatch.readAndRestart();    
+    console.log({ layer: 'Layer 3', timeTaken, mouseDistance, geolocationData: geolocation });
     switch (Math.floor(Math.random() * 3)) {
       case 0: navigate('/human'); break;
       case 1: navigate('/bot'); break;

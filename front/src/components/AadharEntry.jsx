@@ -16,10 +16,9 @@ export function AadharEntry({ onSubmit }) {
   };
 
   function handleSubmitClicked() {
-    const formTimeTaken = (Date.now() - loadTime.current) / 1000;
     const typingTimeTaken = (typingTime.current.last - typingTime.current.first) / 1000;
     const typingSpeed = aadharText.current.length / typingTimeTaken;
-    onSubmit(typingSpeed, formTimeTaken, aadharText.current);
+    onSubmit(typingSpeed);
   };
 
   return (
