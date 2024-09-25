@@ -8,10 +8,23 @@
 .sidebarDiv {
   width: 25%;
   min-width: 256px;
-
+  display: flex;
+  flex-direction: column;
   background-color: gray;
 }
 
 .tabDiv {
   flex-grow: 1;
+}
+
+button{
+  background-color: gray;
+  padding: 10px;
+  margin: 10px;
+  border: none;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #ffffff;
 }
