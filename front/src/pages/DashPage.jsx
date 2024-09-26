@@ -21,8 +21,8 @@ export function DashPage() {
     <div className={styles.page}>
       <div className={styles.sidebarDiv}>
         <>add a logo + welcome message</>
-        <button onClick={() => handleSwitchTab(0)}>Layers</button>
-        <button onClick={() => handleSwitchTab(1)}>Statistics</button>
+        <button className={styles.tabBtn} onClick={() => handleSwitchTab(0)}>Layers</button>
+        <button className={styles.tabBtn} onClick={() => handleSwitchTab(1)}>Statistics</button>
       </div>
       <div className={styles.tabDiv}>
         {mapIndexToTab(currentTab)}

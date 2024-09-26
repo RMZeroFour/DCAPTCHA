@@ -16,7 +16,8 @@ export function useGeolocation() {
         country.current = res['location']['country'];
         state.current = res['location']['state'];
         city.current = res['location']['city'];
-      });
+      }
+    );
   }, []);
 
   return { isProxy, isAbuser, country, state, city };

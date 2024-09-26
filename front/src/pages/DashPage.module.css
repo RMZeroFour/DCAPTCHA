@@ -17,7 +17,7 @@
   flex-grow: 1;
 }
 
-button{
+.tabBtn {
   background-color: gray;
   padding: 10px;
   margin: 10px;
@@ -25,6 +25,6 @@ button{
   cursor: pointer;
 }
 
-button:hover {
+.tabBtn:hover {
   background-color: #ffffff;
 }

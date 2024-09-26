@@ -21,19 +21,63 @@ export function FormPage() {
 
   function handleSubmitAadhar(typingSpeed) {
     const timeTaken = stopwatch.readAndRestart();
-    console.log({ layer: 'Layer 1', typingSpeed, timeTaken, mouseDistance, geolocationData: geolocation });
+    console.log({ layer: 'Layer 1', typingSpeed, timeTaken, mouseDistance, geolocation });
+    fetch('http://localhost:8000/collect_data_layer_one/',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          'is_abuser': geolocation.isAbuser.current,
+          'time_taken': timeTaken,
+          'typing_speed': typingSpeed,
+          'mouse_distance': mouseDistance.current,
+          'is_proxy': geolocation.isProxy.current,
+          'state': geolocation.state.current,
+          'country': geolocation.country.current,
+        })
+      }
+    );
     setCurrentLayer(2);
   }
 
-  function handleSubmitNumpad() {
+  function handleSubmitNumpad(correct) {
     const timeTaken = stopwatch.readAndRestart();
-    console.log({ layer: 'Layer 2', timeTaken, mouseDistance, geolocationData: geolocation });
-    setCurrentLayer(3);
+    console.log({ layer: 'Layer 2', timeTaken, mouseDistance, geolocation });
+    fetch('http://localhost:8000/collect_data_layer_two/',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          'is_abuser': geolocation.isAbuser.current,
+          'time_taken': timeTaken,
+          'mouse_distance': mouseDistance.current,
+          'is_proxy': geolocation.isProxy.current,
+          'state': geolocation.state.current,
+          'country': geolocation.country.current,
+          'is_solved': correct
+        })
+      }
+    );
+    if (correct) {
+      setCurrentLayer(3);
+    }
   }
 
-  function handleSubmitTask() {
-    const timeTaken = stopwatch.readAndRestart();    
-    console.log({ layer: 'Layer 3', timeTaken, mouseDistance, geolocationData: geolocation });
+  function handleSubmitTask(taskName) {
+    const timeTaken = stopwatch.readAndRestart();
+    console.log({ layer: 'Layer 3', timeTaken, mouseDistance, geolocation });
+    fetch('http://localhost:8000/collect_data_layer_three/',
+      {
+        method: 'POST',
+        body: JSON.stringify({
+          'is_abuser': geolocation.isAbuser.current,
+          'time_taken': timeTaken,
+          'mouse_distance': mouseDistance.current,
+          'is_proxy': geolocation.isProxy.current,
+          'state': geolocation.state.current,
+          'country': geolocation.country.current,
+          'problem_solved': taskName
+        })
+      }
+    );
     switch (Math.floor(Math.random() * 3)) {
       case 0: navigate('/human'); break;
       case 1: navigate('/bot'); break;

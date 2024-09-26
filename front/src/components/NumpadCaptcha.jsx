@@ -24,12 +24,8 @@ export function NumpadCaptcha({ onSubmit }) {
   };
 
   function handleSubmitClicked() {
-    if (captchaNumber === captchaData.answer) {
-      onSubmit();
-    }
-    else {
-      setCaptchaNumber('');
-    }
+    onSubmit(captchaNumber === captchaData.answer);
+    setCaptchaNumber('');
   };
 
   return (
