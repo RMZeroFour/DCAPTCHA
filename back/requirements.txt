@@ -9,3 +9,4 @@ tensorflow
 torch
 torchvision
 matplotlib
+pymongo
