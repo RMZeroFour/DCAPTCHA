@@ -78,11 +78,7 @@ export function FormPage() {
         })
       }
     );
-    switch (Math.floor(Math.random() * 3)) {
-      case 0: navigate('/human'); break;
-      case 1: navigate('/bot'); break;
-      case 2: navigate('/error'); break;
-    }
+    navigate(Math.random() < 0.5 ? '/human' : '/bot');
   }
 
   function mapIndexToLayer(index) {

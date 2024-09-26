@@ -32,7 +32,7 @@ export function OrderingTask({ onSubmit }) {
 
   return (
     <div className={styles.formDiv}>
-      <p className={styles.captionText}><strong>Click the tiles in order</strong></p>
+      <p className={styles.instructionText}><strong>Click the tiles in order</strong></p>
       <div className={styles.tileGrid}>
         <button className={getTileClass(0)} onClick={() => handleTileClicked(0)}>{tileNumbers.current[0]}</button>
         <button className={getTileClass(1)} onClick={() => handleTileClicked(1)}>{tileNumbers.current[1]}</button>

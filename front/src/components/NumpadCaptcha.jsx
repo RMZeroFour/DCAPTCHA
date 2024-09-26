@@ -31,7 +31,7 @@ export function NumpadCaptcha({ onSubmit }) {
   return (
     <div className={styles.formDiv}>
       <div className={styles.leftDiv}>
-        <p className={styles.captionText}><strong>Enter the number below</strong></p>
+        <p className={styles.instructionText}><strong>Enter the number below</strong></p>
         <img className={styles.captchaImg} src={captchaData.image} />
         <div className={styles.controlsDiv}>
           <button className={styles.coloredBtn} onClick={handleAudioClicked}>

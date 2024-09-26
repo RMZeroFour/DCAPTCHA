@@ -16,7 +16,7 @@ export function ColorsTask({ onSubmit }) {
   const [tileStatus, setTileStatus] = useState(generateInitialState());
 
   function getTileClass(index) {
-    return `${styles.tileDiv} ${tileStatus[index] ? styles.unlitTileDiv : styles.litTileDiv}`;
+    return `${styles.tileDiv} ${tileStatus[index] ? styles.offTileDiv : styles.onTileDiv}`;
   }
 
   function handleTileClicked(index) {
@@ -28,7 +28,7 @@ export function ColorsTask({ onSubmit }) {
 
   return (
     <div className={styles.formDiv}>
-      <p className={styles.captionText}><strong>Turn all the tiles white</strong></p>
+      <p className={styles.instructionText}><strong>Turn all the tiles white</strong></p>
       <div className={styles.tileGrid}>
         <button className={getTileClass(0)} onClick={() => handleTileClicked(0)} />
         <button className={getTileClass(1)} onClick={() => handleTileClicked(1)} />

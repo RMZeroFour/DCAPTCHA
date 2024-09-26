@@ -63,7 +63,7 @@ export function MatchTask({ onSubmit }) {
 
   return (
     <div className={styles.formDiv}>
-      <p className={styles.captionText}><strong>Connect all matching shapes</strong></p>
+      <p className={styles.instructionText}><strong>Connect all matching shapes</strong></p>
       <ArcherContainer>
         <div className={styles.tileGrid}>
           <div className={styles.leftDiv}>
