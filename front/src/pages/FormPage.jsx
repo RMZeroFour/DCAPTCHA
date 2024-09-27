@@ -22,7 +22,7 @@ export function FormPage() {
   function handleSubmitAadhar(typingSpeed) {
     const timeTaken = stopwatch.readAndRestart();
     console.log({ layer: 'Layer 1', typingSpeed, timeTaken, mouseDistance, geolocation });
-    fetch('http://localhost:8000/collect_data_layer_one/',
+    fetch('https://dcaptcha.onrender.com/collect_data_layer_one/',
       {
         method: 'POST',
         body: JSON.stringify({
@@ -42,7 +42,7 @@ export function FormPage() {
   function handleSubmitNumpad(correct) {
     const timeTaken = stopwatch.readAndRestart();
     console.log({ layer: 'Layer 2', timeTaken, mouseDistance, geolocation });
-    fetch('http://localhost:8000/collect_data_layer_two/',
+    fetch('https://dcaptcha.onrender.com/collect_data_layer_two/',
       {
         method: 'POST',
         body: JSON.stringify({
@@ -64,7 +64,7 @@ export function FormPage() {
   function handleSubmitTask(taskName) {
     const timeTaken = stopwatch.readAndRestart();
     console.log({ layer: 'Layer 3', timeTaken, mouseDistance, geolocation });
-    fetch('http://localhost:8000/collect_data_layer_three/',
+    fetch('https://dcaptcha.onrender.com/collect_data_layer_three/',
       {
         method: 'POST',
         body: JSON.stringify({
