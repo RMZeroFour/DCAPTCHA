@@ -1,0 +1,10 @@
+{
+    "data_collection": "True",
+    "layer_one": "True",
+    "layer_two": "True",
+    "layer_three": {
+        "ordering": "True",
+        "match": "True",
+        "colors": "True"
+    }
+}

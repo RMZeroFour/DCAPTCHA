@@ -1,14 +1,15 @@
 from datetime import datetime
+import json
 from os import environ
 from pymongo import MongoClient
 from starlette.requests import Request
-# import model_inference as mi
+import model_inference as mi
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-# import numpy as np
-# import base64
+import numpy as np
+import base64
 import uvicorn
-# import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 
 captcha_digits = 3
 mongo_uri = 'mongodb+srv://Hemant_MongoDB_071:Hemant%40MongoDB%40071@hemant-mongodb-071.150fkzd.mongodb.net/'
@@ -25,14 +26,16 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
+SERVER_START_TIME = datetime.now()
 
 @app.get("/")
 async def root():
-    return {"message": "Hello World -20240331 " + str(datetime.now())}
+    return {"message": "Server Started at : " + str(SERVER_START_TIME)}
 
-# @app.post("/predict/")
-# async def get_predictions(req: Request):
+@app.post("/predict/layer_one/")
+async def get_predictions_layer_one(req: Request):
+    random = np.random.rand()
+    return {"Status": "Success", "result": "Bot" if random <0.5 else "Human"}
 #     try :
 #         data = await req.json()
 #         time_taken = data['time_taken']
@@ -54,31 +57,40 @@ async def root():
 #             return {"Status": "Success", "result": "Human"}
 #     except Exception as e:
 #         return {"Status": "Error", "message": str(e)}
+@app.post("/predict/layer_two/")
+async def get_predictions_layer_two(req: Request):
+    random = np.random.rand()
+    return {"Status": "Success", "result": "Bot" if random <0.5 else "Human"}
 
-# @app.get("/captcha_image/")
-# async def get_captcha_image():
-#     answer = ''
-#     for _ in range(captcha_digits):
-#         img, ans = mi.get_adv_image(0.2)
-#         if _ == 0:
+@app.post("/predict/layer_three/")
+async def get_predictions_layer_three(req: Request):
+    random = np.random.rand()
+    return {"Status": "Success", "result": "Bot" if random <0.5 else "Human"}
 
-#             image=np.array(img[0])
-#         else :
-#             image=np.hstack((image, np.array(img[0])))
-#         answer+=str(ans)
-#     plt.imsave("captcha.png", image, cmap='gray')
-#     with open("captcha.png", "rb") as png_file:
-#         png_data = png_file.read()
-#         base64_encoded = base64.b64encode(png_data).decode('utf-8')
-#     data_uri = f"data:image/png;base64,{base64_encoded}"
-#     return {
-#         "Status": "Success",
-#         "image": data_uri,
-#         "answer": answer
-#     }
+@app.get("/captcha_image/")
+async def get_captcha_image():
+    answer = ''
+    for _ in range(captcha_digits):
+        img, ans = mi.get_adv_image(0.2)
+        if _ == 0:
+
+            image=np.array(img[0])
+        else :
+            image=np.hstack((image, np.array(img[0])))
+        answer+=str(ans)
+    plt.imsave("captcha.png", image, cmap='gray')
+    with open("captcha.png", "rb") as png_file:
+        png_data = png_file.read()
+        base64_encoded = base64.b64encode(png_data).decode('utf-8')
+    data_uri = f"data:image/png;base64,{base64_encoded}"
+    return {
+        "Status": "Success",
+        "image": data_uri,
+        "answer": answer
+    }
 
 
-@app.post("/collect_data_layer_one/")
+@app.post("/training_data/layer_one/")
 async def collect_layer_1_data(req: Request):
     data = await req.json()
     is_abuser = data['is_abuser']
@@ -108,7 +120,7 @@ async def collect_layer_1_data(req: Request):
         return {"Status": "Error", "message": str(e)}
 
 
-@app.post("/collect_data_layer_two/")
+@app.post("/training_data/layer_two/")
 async def collect_layer_2_data(req: Request):
     data = await req.json()
     is_abuser = data['is_abuser']
@@ -138,7 +150,7 @@ async def collect_layer_2_data(req: Request):
         return {"Status": "Error", "message": str(e)}
 
 
-@app.post("/collect_data_layer_three/")
+@app.post("/training_data/layer_three/")
 async def collect_layer_3_data(req: Request):
     data = await req.json()
     is_abuser = data['is_abuser']
@@ -164,6 +176,58 @@ async def collect_layer_3_data(req: Request):
             "is_bot": True
         })
         return {"Status": "Success"}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+
+@app.get("/config/")
+async def get_config():
+    try :
+        with open("config.json", "r") as file:
+            data = file.read()
+        return {"Status": "Success", "data": data}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+
+@app.post("/config/")
+async def update_config(req: Request):
+    try :
+        data = await req.json()
+        with open("config.json", "w") as file:
+            json.dump(data, file, indent=4)
+        return {"Status": "Success"}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+
+@app.post("/authenticate/")
+async def user_auth(req: Request):
+    try:
+        data = await req.json()
+        username = data['username']
+        password = data['password']
+        database = client.dashboard
+        collection = database.users
+        result = collection.find_one({"username": username, "password": password})
+        if result:
+            return {"Status": "Success", "message": "User Authenticated"}
+        else:
+            return {"Status": "Error", "message": "Invalid Credentials"}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+
+@app.post("/create_user/")
+async def create_user(req: Request):
+    try:
+        data = await req.json()
+        username = data['username']
+        password = data['password']
+        database = client.dashboard
+        collection = database.users
+        result = collection.find_one({"username": username})
+        if result:
+            return {"Status": "Error", "message": "User Already Exists"}
+        else:
+            collection.insert_one({"username": username, "password": password})
+            return {"Status": "Success", "message": "User Created"}
     except Exception as e:
         return {"Status": "Error", "message": str(e)}
 if __name__ == "__main__":
