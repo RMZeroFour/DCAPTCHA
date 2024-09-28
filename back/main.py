@@ -3,7 +3,7 @@ import json
 from os import environ
 from pymongo import MongoClient
 from starlette.requests import Request
-import model_inference as mi
+#import model_inference as mi
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import numpy as np
