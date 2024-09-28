@@ -69,16 +69,16 @@ async def get_predictions_layer_three(req: Request):
 
 @app.get("/captcha_image/")
 async def get_captcha_image():
-    answer = ''
-    for _ in range(captcha_digits):
-        img, ans = mi.get_adv_image(0.2)
-        if _ == 0:
-
-            image=np.array(img[0])
-        else :
-            image=np.hstack((image, np.array(img[0])))
-        answer+=str(ans)
-    plt.imsave("captcha.png", image, cmap='gray')
+    # answer = ''
+    # for _ in range(captcha_digits):
+    #     img, ans = mi.get_adv_image(0.2)
+    #     if _ == 0:
+    #
+    #         image=np.array(img[0])
+    #     else :
+    #         image=np.hstack((image, np.array(img[0])))
+    #     answer+=str(ans)
+    # plt.imsave("captcha.png", image, cmap='gray')
     with open("captcha.png", "rb") as png_file:
         png_data = png_file.read()
         base64_encoded = base64.b64encode(png_data).decode('utf-8')
@@ -86,7 +86,7 @@ async def get_captcha_image():
     return {
         "Status": "Success",
         "image": data_uri,
-        "answer": answer
+        "answer": '478'
     }
 
 
