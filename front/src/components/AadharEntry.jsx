@@ -16,7 +16,7 @@ export function AadharEntry({ onSubmit }) {
   };
 
   function handleSubmitClicked() {
-    if(aadharText.current.length !== 12)
+    if(aadharText.current.length !== 12 || isNaN(aadharText.current))
     {
       alert('Please check your 12 digit Aadhar number');
       return;
