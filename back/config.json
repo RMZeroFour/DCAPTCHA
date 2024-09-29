@@ -1,5 +1,5 @@
 {
-    "data_collection": ["True",{"human": "True", "bot": "True"}],
+    "data_collection": {"human": "True", "bot": "True"},
     "layer_one": "True",
     "layer_two": "True",
     "layer_three": {

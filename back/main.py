@@ -3,7 +3,7 @@ import json
 from os import environ
 from pymongo import MongoClient
 from starlette.requests import Request
-#import model_inference as mi
+import model_inference as mi
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import numpy as np
@@ -33,81 +33,97 @@ async def root():
     return {"message": "Server Started at : " + str(SERVER_START_TIME)}
 @app.post("/predict/layer_one/")
 async def get_predictions_layer_one(req: Request):
-    random = np.random.rand()
+    data=await req.json()
+    time_taken = data['time_taken']
+    typing_speed = data['typing_speed']
+    mouse_distance = data['mouse_distance']
+    country = data['country']
+    state = data['state']
+    is_proxy = data['is_proxy']
+    is_abuser = data['is_abuser']
+    user_agent = data['user-agent']
     database = client.flow_data
     collection = database.layer_data
-    if random < 0.3333:
-        collection.update_one({"layer": 1}, {"$inc": {"bot": 1}})
-        return {"Status": "Success", "result": "Bot"}
-    elif 0.3333 <= random < 0.6666:
-        collection.update_one({"layer": 1}, {"$inc": {"not_sure": 1}})
-        return {"Status": "Success", "result": "Not Sure"}
-    else:
-        collection.update_one({"layer": 1}, {"$inc": {"human": 1}})
-        return {"Status": "Success", "result": "Human"}
-#     try :
-#         data = await req.json()
-#         time_taken = data['time_taken']
-#         typing_speed = data['typing_speed']
-#         mouse_distance = data['mouse_distance']
-#         country = data['country']
-#         city = data['city']
-#         is_proxy = data['is_proxy']
-#         result = mi.model_inference(
-#             time_taken, typing_speed, mouse_distance, country, city, is_proxy)
-#         if result > 0.8:
-#             print(result)
-#             return {"Status": "Success", "result": "Bot"}
-#         elif 0.8 >= result >= 0.2:
-#             print(result)
-#             return {"Status": "Success", "result": "Not Sure"}
-#         else:
-#             print(result)
-#             return {"Status": "Success", "result": "Human"}
-#     except Exception as e:
-#         return {"Status": "Error", "message": str(e)}
+    try :
+        prediction=mi.model_inference_layer_1(time_taken,typing_speed,mouse_distance,country,state,is_proxy,is_abuser,user_agent)
+        if prediction < 0.2:
+            collection.update_one({"layer": 1}, {"$inc": {"bot": 1}})
+            return {"Status": "Success", "result": "Bot"}
+        elif 0.2 <= prediction < 0.8:
+            collection.update_one({"layer": 1}, {"$inc": {"not_sure": 1}})
+            return {"Status": "Success", "result": "Not Sure"}
+        else:
+            collection.update_one({"layer": 1}, {"$inc": {"human": 1}})
+            return {"Status": "Success", "result": "Human"}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
 @app.post("/predict/layer_two/")
 async def get_predictions_layer_two(req: Request):
-    random = np.random.rand()
-    database = client.flow_data
-    collection = database.layer_data
-    if random < 0.3333:
-        collection.update_one({"layer": 2}, {"$inc": {"bot": 1}})
-        return {"Status": "Success", "result": "Bot"}
-    elif 0.3333 <= random < 0.6666:
-        collection.update_one({"layer": 2}, {"$inc": {"not_sure": 1}})
-        return {"Status": "Success", "result": "Not Sure"}
-    else:
-        collection.update_one({"layer": 2}, {"$inc": {"human": 1}})
-        return {"Status": "Success", "result": "Human"}
+    data=await req.json()
+    time_taken = data['time_taken']
+    mouse_distance = data['mouse_distance']
+    country = data['country']
+    state = data['state']
+    is_proxy = data['is_proxy']
+    is_abuser = data['is_abuser']
+    user_agent = data['user-agent']
+    is_solved = data['is_solved']
+    try :
+        prediction=mi.model_inference_layer_2(time_taken,mouse_distance,country,state,is_proxy,is_abuser,user_agent,is_solved)
+        database = client.flow_data
+        collection = database.layer_data
+        if prediction < 0.2:
+            collection.update_one({"layer": 2}, {"$inc": {"bot": 1}})
+            return {"Status": "Success", "result": "Bot"}
+        elif 0.2 <= prediction < 0.8:
+            collection.update_one({"layer": 2}, {"$inc": {"not_sure": 1}})
+            return {"Status": "Success", "result": "Not Sure"}
+        else:
+            collection.update_one({"layer": 2}, {"$inc": {"human": 1}})
+            return {"Status": "Success", "result": "Human"}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
 
 @app.post("/predict/layer_three/")
 async def get_predictions_layer_three(req: Request):
-    random = np.random.rand()
-    database = client.flow_data
-    collection = database.layer_data
-    if random < 0.3333:
-        collection.update_one({"layer": 3}, {"$inc": {"bot": 1}})
-        return {"Status": "Success", "result": "Bot"}
-    elif 0.3333 <= random < 0.6666:
-        collection.update_one({"layer": 3}, {"$inc": {"not_sure": 1}})
-        return {"Status": "Success", "result": "Not Sure"}
-    else:
-        collection.update_one({"layer": 3}, {"$inc": {"human": 1}})
-        return {"Status": "Success", "result": "Human"}
+    data=await req.json()
+    time_taken = data['time_taken']
+    mouse_distance = data['mouse_distance']
+    country = data['country']
+    state = data['state']
+    is_proxy = data['is_proxy']
+    is_abuser = data['is_abuser']
+    user_agent = data['user-agent']
+    problem_solved = data['problem_solved']
+
+    try :
+        prediction=mi.model_inference_layer_3(time_taken,mouse_distance,country,state,is_proxy,is_abuser,user_agent,problem_solved)
+        database = client.flow_data
+        collection = database.layer_data
+        if prediction < 0.2:
+            collection.update_one({"layer": 3}, {"$inc": {"bot": 1}})
+            return {"Status": "Success", "result": "Bot"}
+        elif 0.2 <= prediction < 0.8:
+            collection.update_one({"layer": 3}, {"$inc": {"not_sure": 1}})
+            return {"Status": "Success", "result": "Not Sure"}
+        else:
+            collection.update_one({"layer": 3}, {"$inc": {"human": 1}})
+            return {"Status": "Success", "result": "Human"}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
 
 @app.get("/captcha_image/")
 async def get_captcha_image():
-    # answer = ''
-    # for _ in range(captcha_digits):
-    #     img, ans = mi.get_adv_image(0.2)
-    #     if _ == 0:
-    #
-    #         image=np.array(img[0])
-    #     else :
-    #         image=np.hstack((image, np.array(img[0])))
-    #     answer+=str(ans)
-    # plt.imsave("captcha.png", image, cmap='gray')
+    answer = ''
+    for _ in range(captcha_digits):
+        img, ans = mi.get_adv_image(0.2)
+        if _ == 0:
+
+            image=np.array(img[0])
+        else :
+            image=np.hstack((image, np.array(img[0])))
+        answer+=str(ans)
+    plt.imsave("captcha.png", image, cmap='gray')
     with open("captcha.png", "rb") as png_file:
         png_data = png_file.read()
         base64_encoded = base64.b64encode(png_data).decode('utf-8')

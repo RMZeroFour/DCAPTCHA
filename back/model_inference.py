@@ -45,7 +45,6 @@ CAT_MODEL_LAYER_1 = CatBoostClassifier()
 CAT_MODEL_LAYER_1.load_model('../model/Level _1/demo_weights_catboost.json')
 GATE_MODEL_LAYER_1 =gate_nn()
 GATE_MODEL_LAYER_1.load_weights('../model/Level _1/demo_weights_gate.weights.h5')
-joblib_file = '../model/Level _1/abuser_label_encoder.joblib'
 
 COUNTRY_ENCODER_LAYER_1 = LabelEncoder()
 COUNTRY_ENCODER_LAYER_1.classes_ = np.load('../model/Level _1/country_label_encoder.joblib',allow_pickle=True)
@@ -53,8 +52,6 @@ STATE_ENCODER_LAYER_1 = LabelEncoder()
 STATE_ENCODER_LAYER_1.classes_ = np.load('../model/Level _1/city_label_encoder.joblib',allow_pickle=True)
 PROXY_ENCODER_LAYER_1 = LabelEncoder()
 PROXY_ENCODER_LAYER_1.classes_ = np.load('../model/Level _1/proxy_label_encoder.joblib',allow_pickle=True)
-# ABUSER_ENCODER_LAYER_1 = LabelEncoder()
-# ABUSER_ENCODER_LAYER_1.classes_ = np.load('../model/Level _1/abuser_label_encoder.joblib',allow_pickle=True)
 BROWSER_FAMILY_ENCODER_LAYER_1 = LabelEncoder()
 BROWSER_FAMILY_ENCODER_LAYER_1.classes_ = np.load('../model/Level _1/browser_family_label_encoder.joblib',allow_pickle=True)
 BROWSER_VERSION_ENCODER_LAYER_1 = LabelEncoder()
@@ -86,6 +83,114 @@ def model_inference_layer_1(time_taken,typing_speed,mouse_distance,country,state
     gate_data = np.array([xgb_pred[0][0],cat_pred[0][0],lgbm_pred[0][0]]).reshape(1,3)
     gate_pred = GATE_MODEL_LAYER_1.predict(gate_data)
     return gate_pred[0][0]
+## bot
+print(model_inference_layer_1(7.958,2.272257798,46.01086828,'India','Haryana','false',False,'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36'))
+## human
+print(model_inference_layer_1(3.959,6.756756757,487.4600438,'India','Delhi','false',False,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36'))
+# Layer 2
+LGBM_MODEL_LAYER_2 = joblib.load('../model/Level_2/lgbm_model.joblib')
+XGB_MODEL_LAYER_2 = xgb.XGBClassifier()
+XGB_MODEL_LAYER_2.load_model('../model/Level_2/demo_weights_xgboost.json')
+CAT_MODEL_LAYER_2 = CatBoostClassifier()
+CAT_MODEL_LAYER_2.load_model('../model/Level_2/demo_weights_catboost.json')
+GATE_MODEL_LAYER_2 =gate_nn()
+GATE_MODEL_LAYER_2.load_weights('../model/Level_2/demo_weights_gate.weights.h5')
+
+COUNTRY_ENCODER_LAYER_2 = LabelEncoder()
+COUNTRY_ENCODER_LAYER_2.classes_ = np.load('../model/Level_2/country_label_encoder.joblib',allow_pickle=True)
+STATE_ENCODER_LAYER_2 = LabelEncoder()
+STATE_ENCODER_LAYER_2.classes_ = np.load('../model/Level_2/city_label_encoder.joblib',allow_pickle=True)
+PROXY_ENCODER_LAYER_2 = LabelEncoder()
+PROXY_ENCODER_LAYER_2.classes_ = np.load('../model/Level_2/proxy_label_encoder.joblib',allow_pickle=True)
+BROWSER_FAMILY_ENCODER_LAYER_2 = LabelEncoder()
+BROWSER_FAMILY_ENCODER_LAYER_2.classes_ = np.load('../model/Level_2/browser_family_label_encoder.joblib',allow_pickle=True)
+BROWSER_VERSION_ENCODER_LAYER_2 = LabelEncoder()
+BROWSER_VERSION_ENCODER_LAYER_2.classes_ = np.load('../model/Level_2/browser_version_label_encoder.joblib',allow_pickle=True)
+OS_FAMILY_ENCODER_LAYER_2 = LabelEncoder()
+OS_FAMILY_ENCODER_LAYER_2.classes_ = np.load('../model/Level_2/os_family_label_encoder.joblib',allow_pickle=True)
+OS_VERSION_ENCODER_LAYER_2 = LabelEncoder()
+OS_VERSION_ENCODER_LAYER_2.classes_ = np.load('../model/Level_2/os_version_label_encoder.joblib',allow_pickle=True)
+DEVICE_FAMILY_ENCODER_LAYER_2 = LabelEncoder()
+DEVICE_FAMILY_ENCODER_LAYER_2.classes_ = np.load('../model/Level_2/device_family_label_encoder.joblib',allow_pickle=True)
+def model_inference_layer_2(time_taken,mouse_distance,country,state,is_proxy,is_abuser,user_agent,is_solved):
+    country = COUNTRY_ENCODER_LAYER_2.transform([country])[0]
+    state = STATE_ENCODER_LAYER_2.transform([state])[0]
+    is_proxy = PROXY_ENCODER_LAYER_2.transform([is_proxy])[0]
+    is_abuser = 1 if is_abuser else 0
+    ua = parse_user_agent(user_agent)
+    browser_family = BROWSER_FAMILY_ENCODER_LAYER_2.transform([ua['browser_family']])[0]
+    browser_version = BROWSER_VERSION_ENCODER_LAYER_2.transform([ua['browser_version']])[0]
+    os_family = OS_FAMILY_ENCODER_LAYER_2.transform([ua['os_family']])[0]
+    os_version = OS_VERSION_ENCODER_LAYER_2.transform([ua['os_version']])[0]
+    device_family = DEVICE_FAMILY_ENCODER_LAYER_2.transform([ua['device_family']])[0]
+    is_mobile = 1 if ua['is_mobile'] else 0
+    is_tablet = 1 if ua['is_tablet'] else 0
+    is_pc = 1 if ua['is_pc'] else 0
+    is_solved = 1 if is_solved else 0
+    data=np.array([is_abuser,time_taken,mouse_distance,state,country,is_solved,browser_family,browser_version,os_family,os_version,device_family,is_mobile,is_tablet,is_pc]).reshape(1,14)
+    lgbm_pred = LGBM_MODEL_LAYER_2.predict_proba(data)
+    xgb_pred = XGB_MODEL_LAYER_2.predict_proba(data)
+    cat_pred = CAT_MODEL_LAYER_2.predict_proba(data)
+    gate_data = np.array([xgb_pred[0][0],cat_pred[0][0],lgbm_pred[0][0]]).reshape(1,3)
+    gate_pred = GATE_MODEL_LAYER_2.predict(gate_data)
+    return gate_pred[0][0]
+## bot
+print(model_inference_layer_2(3.411,415.9695575,'India','Haryana','false',False,'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36',False))
+## human
+print(model_inference_layer_2(4.649,1093.685516,'India','Delhi','false',False,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36',True))
+# Layer 3
+LGBM_MODEL_LAYER_3 = joblib.load('../model/Level_3/lgbm_model.joblib')
+XGB_MODEL_LAYER_3 = xgb.XGBClassifier()
+XGB_MODEL_LAYER_3.load_model('../model/Level_3/demo_weights_xgboost.json')
+CAT_MODEL_LAYER_3 = CatBoostClassifier()
+CAT_MODEL_LAYER_3.load_model('../model/Level_3/demo_weights_catboost.json')
+GATE_MODEL_LAYER_3 =gate_nn()
+GATE_MODEL_LAYER_3.load_weights('../model/Level_3/demo_weights_gate.weights.h5')
+
+COUNTRY_ENCODER_LAYER_3 = LabelEncoder()
+COUNTRY_ENCODER_LAYER_3.classes_ = np.load('../model/Level_3/country_label_encoder.joblib',allow_pickle=True)
+STATE_ENCODER_LAYER_3 = LabelEncoder()
+STATE_ENCODER_LAYER_3.classes_ = np.load('../model/Level_3/city_label_encoder.joblib',allow_pickle=True)
+PROXY_ENCODER_LAYER_3 = LabelEncoder()
+PROXY_ENCODER_LAYER_3.classes_ = np.load('../model/Level_3/proxy_label_encoder.joblib',allow_pickle=True)
+BROWSER_FAMILY_ENCODER_LAYER_3 = LabelEncoder()
+BROWSER_FAMILY_ENCODER_LAYER_3.classes_ = np.load('../model/Level_3/browser_family_label_encoder.joblib',allow_pickle=True)
+BROWSER_VERSION_ENCODER_LAYER_3 = LabelEncoder()
+BROWSER_VERSION_ENCODER_LAYER_3.classes_ = np.load('../model/Level_3/browser_version_label_encoder.joblib',allow_pickle=True)
+OS_FAMILY_ENCODER_LAYER_3 = LabelEncoder()
+OS_FAMILY_ENCODER_LAYER_3.classes_ = np.load('../model/Level_3/os_family_label_encoder.joblib',allow_pickle=True)
+OS_VERSION_ENCODER_LAYER_3 = LabelEncoder()
+OS_VERSION_ENCODER_LAYER_3.classes_ = np.load('../model/Level_3/os_version_label_encoder.joblib',allow_pickle=True)
+DEVICE_FAMILY_ENCODER_LAYER_3 = LabelEncoder()
+DEVICE_FAMILY_ENCODER_LAYER_3.classes_ = np.load('../model/Level_3/device_family_label_encoder.joblib',allow_pickle=True)
+PROBLEM_TYPE_ENCODER_LAYER_3 = LabelEncoder()
+PROBLEM_TYPE_ENCODER_LAYER_3.classes_ = np.load('../model/Level_3/problem_solved_label_encoder.joblib',allow_pickle=True)
+def model_inference_layer_3(time_taken,mouse_distance,country,state,is_proxy,is_abuser,user_agent,problem_type):
+    country = COUNTRY_ENCODER_LAYER_3.transform([country])[0]
+    state = STATE_ENCODER_LAYER_3.transform([state])[0]
+    is_proxy = PROXY_ENCODER_LAYER_3.transform([is_proxy])[0]
+    is_abuser = 1 if is_abuser else 0
+    ua = parse_user_agent(user_agent)
+    browser_family = BROWSER_FAMILY_ENCODER_LAYER_3.transform([ua['browser_family']])[0]
+    browser_version = BROWSER_VERSION_ENCODER_LAYER_3.transform([ua['browser_version']])[0]
+    os_family = OS_FAMILY_ENCODER_LAYER_3.transform([ua['os_family']])[0]
+    os_version = OS_VERSION_ENCODER_LAYER_3.transform([ua['os_version']])[0]
+    device_family = DEVICE_FAMILY_ENCODER_LAYER_3.transform([ua['device_family']])[0]
+    is_mobile = 1 if ua['is_mobile'] else 0
+    is_tablet = 1 if ua['is_tablet'] else 0
+    is_pc = 1 if ua['is_pc'] else 0
+    problem_type = PROBLEM_TYPE_ENCODER_LAYER_3.transform([problem_type])[0]
+    data=np.array([is_abuser,time_taken,mouse_distance,state,country,problem_type,browser_family,browser_version,os_family,os_version,device_family,is_mobile,is_tablet,is_pc]).reshape(1,14)
+    lgbm_pred = LGBM_MODEL_LAYER_3.predict_proba(data)
+    xgb_pred = XGB_MODEL_LAYER_3.predict_proba(data)
+    cat_pred = CAT_MODEL_LAYER_3.predict_proba(data)
+    gate_data = np.array([xgb_pred[0][0],cat_pred[0][0],lgbm_pred[0][0]]).reshape(1,3)
+    gate_pred = GATE_MODEL_LAYER_3.predict(gate_data)
+    return gate_pred[0][0]
+## bot
+print(model_inference_layer_3(4.539,1696.625807,'India','Haryana','false',False,'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36','ordering'))
+## human
+print(model_inference_layer_3(3.193,2125.782825,'India','Delhi','false',False,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36','match'))
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()
