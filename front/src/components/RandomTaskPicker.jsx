@@ -1,6 +1,6 @@
-import { ColorsTask } from "./ColorsTask.jsx";
-import { MatchTask } from "./MatchTask.jsx";
-import { OrderingTask } from "./OrderingTask.jsx";
+import { ColorsTask } from './ColorsTask.jsx';
+import { MatchTask } from './MatchTask.jsx';
+import { OrderingTask } from './OrderingTask.jsx';
 
 export function RandomTaskPicker({ onSubmit }) {
   switch (Math.floor(Math.random() * 3)) {

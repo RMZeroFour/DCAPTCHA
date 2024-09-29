@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { AuthenticationProvider } from './context/Authentication.jsx';
 import { PageLayout } from './pages/PageLayout.jsx';
 import { AdminPage } from './pages/AdminPage.jsx';
 import { BotPage } from './pages/BotPage.jsx';
@@ -46,5 +47,9 @@ const pageRouter = createBrowserRouter([
 ]);
 
 export function App() {
-  return <RouterProvider router={pageRouter} />;
+  return (
+    <AuthenticationProvider>
+      <RouterProvider router={pageRouter} />
+    </AuthenticationProvider>
+  );
 }

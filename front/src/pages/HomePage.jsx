@@ -12,7 +12,8 @@ export function HomePage() {
       <div className={styles.spacer} />
       <div className={styles.rightDiv}>
         <img className={styles.fingerprintImg} alt='A fingerprint' src={fingerprint} />
-        <Link className={styles.loginBtn} to='/form'><strong>Login to myAadhar</strong></Link>
+        <Link className={styles.userLoginBtn} to='/form'><strong>Login to myAadhar</strong></Link>
+        <Link className={styles.adminLoginBtn} to='/admin'><strong>Login to myAadhar Admin</strong></Link>
       </div>
     </div>
   );

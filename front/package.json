@@ -16,7 +16,8 @@
     "react-archer": "^4.4.0",
     "react-dom": "^18.3.1",
     "react-google-charts": "^4.0.5",
-    "react-router-dom": "^6.26.1"
+    "react-router-dom": "^6.26.1",
+    "react-switch": "^7.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",

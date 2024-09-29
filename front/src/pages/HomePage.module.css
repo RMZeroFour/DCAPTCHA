@@ -50,7 +50,7 @@
   aspect-ratio: auto;
 }
 
-.loginBtn {
+.userLoginBtn {
   min-width: 80%;
 
   padding: 16px;
@@ -66,4 +66,9 @@
 
   text-decoration: none;
   text-align: center;
+}
+
+.adminLoginBtn,
+.adminLoginBtn:visited {
+  color: rgb(29, 29, 143);
 }
