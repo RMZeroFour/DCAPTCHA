@@ -26,7 +26,7 @@
   display: block;
   width: 200%;
   margin-left: -100%;
-  transition: margin 0.3s ease-in 0s;
+  transition: background-color 0.3s ease-in 0s;
 }
 
 .inner:before,
