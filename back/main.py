@@ -31,11 +31,20 @@ SERVER_START_TIME = datetime.now()
 @app.get("/")
 async def root():
     return {"message": "Server Started at : " + str(SERVER_START_TIME)}
-
 @app.post("/predict/layer_one/")
 async def get_predictions_layer_one(req: Request):
     random = np.random.rand()
-    return {"Status": "Success", "result": "Bot" if random <0.5 else "Human"}
+    database = client.flow_data
+    collection = database.layer_data
+    if random < 0.3333:
+        collection.update_one({"layer": 1}, {"$inc": {"bot": 1}})
+        return {"Status": "Success", "result": "Bot"}
+    elif 0.3333 <= random < 0.6666:
+        collection.update_one({"layer": 1}, {"$inc": {"not_sure": 1}})
+        return {"Status": "Success", "result": "Not Sure"}
+    else:
+        collection.update_one({"layer": 1}, {"$inc": {"human": 1}})
+        return {"Status": "Success", "result": "Human"}
 #     try :
 #         data = await req.json()
 #         time_taken = data['time_taken']
@@ -60,12 +69,32 @@ async def get_predictions_layer_one(req: Request):
 @app.post("/predict/layer_two/")
 async def get_predictions_layer_two(req: Request):
     random = np.random.rand()
-    return {"Status": "Success", "result": "Bot" if random <0.5 else "Human"}
+    database = client.flow_data
+    collection = database.layer_data
+    if random < 0.3333:
+        collection.update_one({"layer": 2}, {"$inc": {"bot": 1}})
+        return {"Status": "Success", "result": "Bot"}
+    elif 0.3333 <= random < 0.6666:
+        collection.update_one({"layer": 2}, {"$inc": {"not_sure": 1}})
+        return {"Status": "Success", "result": "Not Sure"}
+    else:
+        collection.update_one({"layer": 2}, {"$inc": {"human": 1}})
+        return {"Status": "Success", "result": "Human"}
 
 @app.post("/predict/layer_three/")
 async def get_predictions_layer_three(req: Request):
     random = np.random.rand()
-    return {"Status": "Success", "result": "Bot" if random <0.5 else "Human"}
+    database = client.flow_data
+    collection = database.layer_data
+    if random < 0.3333:
+        collection.update_one({"layer": 3}, {"$inc": {"bot": 1}})
+        return {"Status": "Success", "result": "Bot"}
+    elif 0.3333 <= random < 0.6666:
+        collection.update_one({"layer": 3}, {"$inc": {"not_sure": 1}})
+        return {"Status": "Success", "result": "Not Sure"}
+    else:
+        collection.update_one({"layer": 3}, {"$inc": {"human": 1}})
+        return {"Status": "Success", "result": "Human"}
 
 @app.get("/captcha_image/")
 async def get_captcha_image():
@@ -228,6 +257,38 @@ async def create_user(req: Request):
         else:
             collection.insert_one({"username": username, "password": password})
             return {"Status": "Success", "message": "User Created"}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+
+@app.get("/analytics/layer_one/")
+async def get_layer_one_data():
+    try:
+        database = client.flow_data
+        collection = database.layer_data
+        data=collection.find_one({"layer": 1})
+        data.pop("_id")
+        return {"Status": "Success", "data": data}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+
+@app.get("/analytics/layer_two/")
+async def get_layer_two_data():
+    try:
+        database = client.flow_data
+        collection = database.layer_data
+        data=collection.find_one({"layer": 2})
+        data.pop("_id")
+        return {"Status": "Success", "data": data}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+@app.get("/analytics/layer_three/")
+async def get_layer_three_data():
+    try:
+        database = client.flow_data
+        collection = database.layer_data
+        data=collection.find_one({"layer": 3})
+        data.pop("_id")
+        return {"Status": "Success", "data": data}
     except Exception as e:
         return {"Status": "Error", "message": str(e)}
 if __name__ == "__main__":
