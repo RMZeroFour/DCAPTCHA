@@ -12,10 +12,15 @@ export function AadharEntry({ onSubmit }) {
 
   function handleAadharChanged(event) {
     typingTime.current = { first: typingTime.current.first ?? Date.now(), last: Date.now() };
-    aadharText.current = event.target.value;
+    aadharText.current = event.target.value; 
   };
 
   function handleSubmitClicked() {
+    if(aadharText.current.length !== 12)
+    {
+      alert('Please check your 12 digit Aadhar number');
+      return;
+    }
     const typingTimeTaken = (typingTime.current.last - typingTime.current.first) / 1000;
     const typingSpeed = aadharText.current.length / typingTimeTaken;
     onSubmit(typingSpeed);
@@ -24,7 +29,7 @@ export function AadharEntry({ onSubmit }) {
   return (
     <div className={styles.formDiv}>
       <input className={styles.aadharInp} onInput={handleAadharChanged}
-        placeholder='Enter Aadhar Number' type='text' pattern='\d+' name='aadhar' />
+        placeholder='Enter Aadhar Number' type='text' pattern='\d+' name='aadhar' maxLength = {12} />
       <div className={styles.spacer} />
       <button className={styles.submitBtn} onClick={handleSubmitClicked}>Verify with DCAPTCHA</button>
     </div>
