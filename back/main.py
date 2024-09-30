@@ -1,4 +1,5 @@
 from datetime import datetime
+import json
 from os import environ
 from pymongo import MongoClient
 from starlette.requests import Request
@@ -8,11 +9,11 @@ from fastapi.middleware.cors import CORSMiddleware
 # import numpy as np
 # import base64
 import uvicorn
-# import matplotlib.pyplot as plt
-
-captcha_digits = 3
-mongo_uri = 'mongodb+srv://Hemant_MongoDB_071:Hemant%40MongoDB%40071@hemant-mongodb-071.150fkzd.mongodb.net/'
-# environ.get("MONGO_URI")
+import matplotlib.pyplot as plt
+from dotenv import load_dotenv
+load_dotenv(override=True)
+mongo_uri = environ.get("MONGO_URI")
+captcha_digits = environ.get("CAPTCHA_DIGITS")
 try:
     client = MongoClient(mongo_uri)
 except Exception as e:
@@ -25,60 +26,117 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
+SERVER_START_TIME = datetime.now()
 @app.get("/")
 async def root():
-    return {"message": "Hello World -20240331 " + str(datetime.now())}
+    return {"message": "Server Started at : " + str(SERVER_START_TIME)}
+@app.post("/predict/layer_one/")
+async def get_predictions_layer_one(req: Request):
+    data=await req.json()
+    time_taken = data['time_taken']
+    typing_speed = data['typing_speed']
+    mouse_distance = data['mouse_distance']
+    country = data['country']
+    state = data['state']
+    is_proxy = data['is_proxy']
+    is_abuser = data['is_abuser']
+    user_agent = data['user-agent']
 
-# @app.post("/predict/")
-# async def get_predictions(req: Request):
-#     try :
-#         data = await req.json()
-#         time_taken = data['time_taken']
-#         typing_speed = data['typing_speed']
-#         mouse_distance = data['mouse_distance']
-#         country = data['country']
-#         city = data['city']
-#         is_proxy = data['is_proxy']
-#         result = mi.model_inference(
-#             time_taken, typing_speed, mouse_distance, country, city, is_proxy)
-#         if result > 0.8:
-#             print(result)
-#             return {"Status": "Success", "result": "Bot"}
-#         elif 0.8 >= result >= 0.2:
-#             print(result)
-#             return {"Status": "Success", "result": "Not Sure"}
-#         else:
-#             print(result)
-#             return {"Status": "Success", "result": "Human"}
-#     except Exception as e:
-#         return {"Status": "Error", "message": str(e)}
+    database = client.flow_data
+    collection = database.layer_data
 
-# @app.get("/captcha_image/")
-# async def get_captcha_image():
-#     answer = ''
-#     for _ in range(captcha_digits):
-#         img, ans = mi.get_adv_image(0.2)
-#         if _ == 0:
+    try :
+        prediction=mi.model_inference_layer_1(time_taken,typing_speed,mouse_distance,country,state,is_proxy,is_abuser,user_agent)
+        if prediction < 0.2:
+            collection.update_one({"layer": 1}, {"$inc": {"bot": 1}})
+            return {"Status": "Success", "result": "Bot"}
+        elif 0.2 <= prediction < 0.8:
+            collection.update_one({"layer": 1}, {"$inc": {"not_sure": 1}})
+            return {"Status": "Success", "result": "Not Sure"}
+        else:
+            collection.update_one({"layer": 1}, {"$inc": {"human": 1}})
+            return {"Status": "Success", "result": "Human"}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+@app.post("/predict/layer_two/")
+async def get_predictions_layer_two(req: Request):
+    data=await req.json()
+    time_taken = data['time_taken']
+    mouse_distance = data['mouse_distance']
+    country = data['country']
+    state = data['state']
+    is_proxy = data['is_proxy']
+    is_abuser = data['is_abuser']
+    user_agent = data['user-agent']
+    is_solved = data['is_solved']
+    try :
+        prediction=mi.model_inference_layer_2(time_taken,mouse_distance,country,state,is_proxy,is_abuser,user_agent,is_solved)
+        database = client.flow_data
+        collection = database.layer_data
+        if prediction < 0.2:
+            collection.update_one({"layer": 2}, {"$inc": {"bot": 1}})
+            return {"Status": "Success", "result": "Bot"}
+        elif 0.2 <= prediction < 0.8:
+            collection.update_one({"layer": 2}, {"$inc": {"not_sure": 1}})
+            return {"Status": "Success", "result": "Not Sure"}
+        else:
+            collection.update_one({"layer": 2}, {"$inc": {"human": 1}})
+            return {"Status": "Success", "result": "Human"}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
 
-#             image=np.array(img[0])
-#         else :
-#             image=np.hstack((image, np.array(img[0])))
-#         answer+=str(ans)
-#     plt.imsave("captcha.png", image, cmap='gray')
-#     with open("captcha.png", "rb") as png_file:
-#         png_data = png_file.read()
-#         base64_encoded = base64.b64encode(png_data).decode('utf-8')
-#     data_uri = f"data:image/png;base64,{base64_encoded}"
-#     return {
-#         "Status": "Success",
-#         "image": data_uri,
-#         "answer": answer
-#     }
+@app.post("/predict/layer_three/")
+async def get_predictions_layer_three(req: Request):
+    data=await req.json()
+    time_taken = data['time_taken']
+    mouse_distance = data['mouse_distance']
+    country = data['country']
+    state = data['state']
+    is_proxy = data['is_proxy']
+    is_abuser = data['is_abuser']
+    user_agent = data['user-agent']
+    problem_solved = data['problem_solved']
+
+    try :
+        prediction=mi.model_inference_layer_3(time_taken,mouse_distance,country,state,is_proxy,is_abuser,user_agent,problem_solved)
+        database = client.flow_data
+        collection = database.layer_data
+        if prediction < 0.2:
+            collection.update_one({"layer": 3}, {"$inc": {"bot": 1}})
+            return {"Status": "Success", "result": "Bot"}
+        elif 0.2 <= prediction < 0.8:
+            collection.update_one({"layer": 3}, {"$inc": {"not_sure": 1}})
+            return {"Status": "Success", "result": "Not Sure"}
+        else:
+            collection.update_one({"layer": 3}, {"$inc": {"human": 1}})
+            return {"Status": "Success", "result": "Human"}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+
+@app.get("/captcha_image/")
+async def get_captcha_image():
+    answer = ''
+    for _ in range(captcha_digits):
+        img, ans = mi.get_adv_image(0.2)
+        if _ == 0:
+
+            image=np.array(img[0])
+        else :
+            image=np.hstack((image, np.array(img[0])))
+        answer+=str(ans)
+    plt.imsave("captcha.png", image, cmap='gray')
+    with open("captcha.png", "rb") as png_file:
+        png_data = png_file.read()
+        base64_encoded = base64.b64encode(png_data).decode('utf-8')
+    data_uri = f"data:image/png;base64,{base64_encoded}"
+    return {
+        "Status": "Success",
+        "image": data_uri,
+        "answer": '478'
+    }
 
 
-@app.post("/collect_data_layer_one/")
+@app.post("/training_data/layer_one/")
 async def collect_layer_1_data(req: Request):
     data = await req.json()
     is_abuser = data['is_abuser']
@@ -108,7 +166,7 @@ async def collect_layer_1_data(req: Request):
         return {"Status": "Error", "message": str(e)}
 
 
-@app.post("/collect_data_layer_two/")
+@app.post("/training_data/layer_two/")
 async def collect_layer_2_data(req: Request):
     data = await req.json()
     is_abuser = data['is_abuser']
@@ -138,7 +196,7 @@ async def collect_layer_2_data(req: Request):
         return {"Status": "Error", "message": str(e)}
 
 
-@app.post("/collect_data_layer_three/")
+@app.post("/training_data/layer_three/")
 async def collect_layer_3_data(req: Request):
     data = await req.json()
     is_abuser = data['is_abuser']
@@ -164,6 +222,90 @@ async def collect_layer_3_data(req: Request):
             "is_bot": True
         })
         return {"Status": "Success"}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+
+@app.get("/config/")
+async def get_config():
+    try :
+        with open("config.json", "r") as file:
+            data = file.read()
+        return {"Status": "Success", "data": data}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+
+@app.post("/config/")
+async def update_config(req: Request):
+    try :
+        data = await req.json()
+        with open("config.json", "w") as file:
+            json.dump(data, file, indent=4)
+        return {"Status": "Success"}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+
+@app.post("/authenticate/")
+async def user_auth(req: Request):
+    try:
+        data = await req.json()
+        username = data['username']
+        password = data['password']
+        database = client.dashboard
+        collection = database.users
+        result = collection.find_one({"username": username, "password": password})
+        if result:
+            return {"Status": "Success", "message": "User Authenticated"}
+        else:
+            return {"Status": "Error", "message": "Invalid Credentials"}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+
+@app.post("/create_user/")
+async def create_user(req: Request):
+    try:
+        data = await req.json()
+        username = data['username']
+        password = data['password']
+        database = client.dashboard
+        collection = database.users
+        result = collection.find_one({"username": username})
+        if result:
+            return {"Status": "Error", "message": "User Already Exists"}
+        else:
+            collection.insert_one({"username": username, "password": password})
+            return {"Status": "Success", "message": "User Created"}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+
+@app.get("/analytics/layer_one/")
+async def get_layer_one_data():
+    try:
+        database = client.flow_data
+        collection = database.layer_data
+        data=collection.find_one({"layer": 1})
+        data.pop("_id")
+        return {"Status": "Success", "data": data}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+
+@app.get("/analytics/layer_two/")
+async def get_layer_two_data():
+    try:
+        database = client.flow_data
+        collection = database.layer_data
+        data=collection.find_one({"layer": 2})
+        data.pop("_id")
+        return {"Status": "Success", "data": data}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+@app.get("/analytics/layer_three/")
+async def get_layer_three_data():
+    try:
+        database = client.flow_data
+        collection = database.layer_data
+        data=collection.find_one({"layer": 3})
+        data.pop("_id")
+        return {"Status": "Success", "data": data}
     except Exception as e:
         return {"Status": "Error", "message": str(e)}
 if __name__ == "__main__":

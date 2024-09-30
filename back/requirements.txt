@@ -10,3 +10,8 @@ torch
 torchvision
 matplotlib
 pymongo
+lightgbm
+pyyaml
+ua-parser
+user-agents
+python-dotenv
