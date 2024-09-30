@@ -43,6 +43,7 @@ async def get_predictions_layer_one(req: Request):
     user_agent = data['user-agent']
     database = client.flow_data
     collection = database.layer_data
+
     try :
         prediction=mi.model_inference_layer_1(time_taken,typing_speed,mouse_distance,country,state,is_proxy,is_abuser,user_agent)
         if prediction < 0.2:
