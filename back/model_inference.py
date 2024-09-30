@@ -190,7 +190,7 @@ def model_inference_layer_3(time_taken,mouse_distance,country,state,is_proxy,is_
 ## bot
 print(model_inference_layer_3(4.539,1696.625807,'India','Haryana','false',False,'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Safari/537.36','ordering'))
 ## human
-print(model_inference_layer_3(3.193,2125.782825,'India','Delhi','false',False,'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/129.0.0.0 Safari/537.36','match'))
+print(model_inference_layer_3(2.911,2031.109652,'India','Uttar Pradesh','false',False,'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0.0.0 Mobile Safari/537.36','colors'))
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__()

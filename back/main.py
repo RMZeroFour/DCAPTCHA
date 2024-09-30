@@ -10,10 +10,10 @@ import numpy as np
 import base64
 import uvicorn
 import matplotlib.pyplot as plt
-
-captcha_digits = 3
-mongo_uri = 'mongodb+srv://Hemant_MongoDB_071:Hemant%40MongoDB%40071@hemant-mongodb-071.150fkzd.mongodb.net/'
-# environ.get("MONGO_URI")
+from dotenv import load_dotenv
+load_dotenv(override=True)
+mongo_uri = environ.get("MONGO_URI")
+captcha_digits = environ.get("CAPTCHA_DIGITS")
 try:
     client = MongoClient(mongo_uri)
 except Exception as e:
@@ -27,7 +27,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 SERVER_START_TIME = datetime.now()
-
 @app.get("/")
 async def root():
     return {"message": "Server Started at : " + str(SERVER_START_TIME)}
