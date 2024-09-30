@@ -276,9 +276,9 @@ async def user_auth(req: Request):
         collection = database.users
         result = collection.find_one({"username": username, "password": password})
         if result:
-            return {"Status": "Success", "message": "User Authenticated"}
+            return {"Status": "Success", "result": True}
         else:
-            return {"Status": "Error", "message": "Invalid Credentials"}
+            return {"Status": "Error", "result": False}
     except Exception as e:
         return {"Status": "Error", "message": str(e)}
 

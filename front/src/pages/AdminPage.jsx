@@ -14,9 +14,19 @@ export function AdminPage() {
     }
   }, [authentication.username, navigate]);
 
-  function handleLogin(a, b) {
-    if (a === 'bob' && b === 'bob') {
-      authentication.setUsername(a);
+  async function handleLogin(username, password) {
+    const payload = JSON.stringify({
+      username,
+      password
+    });
+    
+    let res = await fetch('http://localhost:8000/authenticate/', { method: 'POST', body: payload });
+    res = await res.json();
+    console.log(res);
+
+    const authenticated = res['result'];
+    if (authenticated) {
+      authentication.setUsername(username);
     }
   }
 
