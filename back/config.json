@@ -1,10 +1,13 @@
 {
-    "data_collection": {"human": "True", "bot": "True"},
-    "layer_one": "True",
-    "layer_two": "True",
+    "data_collection": {
+        "human": "false",
+        "bot": "false"
+    },
+    "layer_one": "true",
+    "layer_two": "true",
     "layer_three": {
-        "ordering": "True",
-        "match": "True",
-        "colors": "True"
+        "ordering": "true",
+        "match": "true",
+        "colors": "true"
     }
 }
