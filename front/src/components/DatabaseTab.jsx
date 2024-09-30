@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ToggleSwitch } from './ToggleSwitch.jsx';
 import styles from './DatabaseTab.module.css';
 
@@ -23,8 +23,24 @@ export function DatabaseTab() {
     }
   }
 
-  function handleSubmit() {
+  async function fetchData() {
+    let res = await fetch('http://localhost:8000/config/data_collection/', { method: 'GET' });
+    res = await res.json();
 
+    setBotDataCollection(res['data']['human']);
+    setHumanDataCollection(res['data']['bot']);
+  };
+
+  useEffect(() => {
+    fetchData().catch(console.error);
+  }, []);
+
+  async function handleSubmit() {
+    const payload = JSON.stringify({
+      bot: botDataCollection,
+      human: humanDataCollection,
+    });
+    await fetch('http://localhost:8000/config/data_collection/', { method: 'POST', body: payload });
   }
 
   return (

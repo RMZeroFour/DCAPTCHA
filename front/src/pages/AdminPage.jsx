@@ -6,17 +6,17 @@ import styles from './AdminPage.module.css';
 
 export function AdminPage() {
   const navigate = useNavigate();
-  const [username, setUsername] = useAuthentication();
+  const authentication = useAuthentication();
 
   useEffect(() => {
-    if (username !== null) {
+    if (authentication.username !== null) {
       navigate('/dash');
     }
-  }, [username]);
+  }, [authentication.username, navigate]);
 
   function handleLogin(a, b) {
     if (a === 'bob' && b === 'bob') {
-      setUsername(a);
+      authentication.setUsername(a);
     }
   }
 

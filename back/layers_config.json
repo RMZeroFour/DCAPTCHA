@@ -1,0 +1,9 @@
+{
+    "layer_one": true,
+    "layer_two": true,
+    "layer_three": {
+        "ordering": true,
+        "match": true,
+        "colors": true
+    }
+}

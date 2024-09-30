@@ -3,11 +3,11 @@ import json
 from os import environ
 from pymongo import MongoClient
 from starlette.requests import Request
-# import model_inference as mi
+import model_inference as mi
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-# import numpy as np
-# import base64
+import numpy as np
+import base64
 import uvicorn
 import matplotlib.pyplot as plt
 from dotenv import load_dotenv
@@ -40,7 +40,7 @@ async def get_predictions_layer_one(req: Request):
     state = data['state']
     is_proxy = data['is_proxy']
     is_abuser = data['is_abuser']
-    user_agent = data['user-agent']
+    user_agent = req.headers['user-agent']
 
     database = client.flow_data
     collection = database.layer_data
@@ -67,7 +67,7 @@ async def get_predictions_layer_two(req: Request):
     state = data['state']
     is_proxy = data['is_proxy']
     is_abuser = data['is_abuser']
-    user_agent = data['user-agent']
+    user_agent = req.headers['user-agent']
     is_solved = data['is_solved']
     try :
         prediction=mi.model_inference_layer_2(time_taken,mouse_distance,country,state,is_proxy,is_abuser,user_agent,is_solved)
@@ -94,7 +94,7 @@ async def get_predictions_layer_three(req: Request):
     state = data['state']
     is_proxy = data['is_proxy']
     is_abuser = data['is_abuser']
-    user_agent = data['user-agent']
+    user_agent = req.headers['user-agent']
     problem_solved = data['problem_solved']
 
     try :
@@ -146,6 +146,7 @@ async def collect_layer_1_data(req: Request):
     is_proxy = data['is_proxy']
     state = data['state']
     country = data['country']
+    is_bot = data['is_bot']
     user_agent = req.headers['user-agent']
     try:
         database = client.training_data
@@ -159,7 +160,7 @@ async def collect_layer_1_data(req: Request):
             "state": state,
             "country": country,
             "user_agent": user_agent,
-            "is_bot": True
+            "is_bot": is_bot
         })
         return {"Status": "Success"}
     except Exception as e:
@@ -176,6 +177,7 @@ async def collect_layer_2_data(req: Request):
     state = data['state']
     country = data['country']
     is_solved = data['is_solved']
+    is_bot = data['is_bot']
     user_agent = req.headers['user-agent']
     try:
         database = client.training_data
@@ -189,7 +191,7 @@ async def collect_layer_2_data(req: Request):
             "country": country,
             "is_solved": is_solved,
             "user_agent": user_agent,
-            "is_bot": True
+            "is_bot": is_bot
         })
         return {"Status": "Success"}
     except Exception as e:
@@ -206,6 +208,7 @@ async def collect_layer_3_data(req: Request):
     state = data['state']
     country = data['country']
     problem_solved = data['problem_solved']
+    is_bot = data['is_bot']
     user_agent = req.headers['user-agent']
     try:
         database = client.training_data
@@ -219,26 +222,45 @@ async def collect_layer_3_data(req: Request):
             'country': country,
             'problem_solved': problem_solved,
             'user_agent': user_agent,
-            "is_bot": True
+            "is_bot": is_bot
         })
         return {"Status": "Success"}
     except Exception as e:
         return {"Status": "Error", "message": str(e)}
 
-@app.get("/config/")
+@app.get("/config/layers")
 async def get_config():
     try :
-        with open("config.json", "r") as file:
-            data = file.read()
+        with open("layers_config.json", "r") as file:
+            data = json.load(file)
         return {"Status": "Success", "data": data}
     except Exception as e:
         return {"Status": "Error", "message": str(e)}
 
-@app.post("/config/")
+@app.post("/config/layers")
 async def update_config(req: Request):
     try :
         data = await req.json()
-        with open("config.json", "w") as file:
+        with open("layers_config.json", "w") as file:
+            json.dump(data, file, indent=4)
+        return {"Status": "Success"}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+
+@app.get("/config/data_collection")
+async def get_config():
+    try :
+        with open("data_collection_config.json", "r") as file:
+            data = json.load(file)
+        return {"Status": "Success", "data": data}
+    except Exception as e:
+        return {"Status": "Error", "message": str(e)}
+
+@app.post("/config/data_collection")
+async def update_config(req: Request):
+    try :
+        data = await req.json()
+        with open("data_collection_config.json", "w") as file:
             json.dump(data, file, indent=4)
         return {"Status": "Success"}
     except Exception as e:

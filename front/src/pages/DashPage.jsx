@@ -1,9 +1,8 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChartLine, faDiagramProject, faDoorOpen, faLayerGroup, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faChartLine, faDiagramProject, faDoorOpen, faLayerGroup } from '@fortawesome/free-solid-svg-icons';
 import { useAuthentication } from '../context/Authentication.jsx';
-import { CredentialsTab } from '../components/CredentialsTab.jsx';
 import { DatabaseTab } from '../components/DatabaseTab.jsx';
 import { LayersTab } from '../components/LayersTab.jsx';
 import { StatisticsTab } from '../components/StatisticsTab.jsx';
@@ -11,7 +10,7 @@ import styles from './DashPage.module.css';
 
 export function DashPage() {
   const navigate = useNavigate();
-  const [username, setUsername] = useAuthentication();
+  const authentication = useAuthentication();
   const [currentTab, setCurrentTab] = useState(0);
 
   function handleSwitchTab(index) {
@@ -19,7 +18,7 @@ export function DashPage() {
   }
 
   function handleSignOut() {
-    setUsername(null);
+    authentication.setUsername(null);
     navigate('/');
   }
 
@@ -28,7 +27,6 @@ export function DashPage() {
       case 0: return <StatisticsTab />;
       case 1: return <LayersTab />;
       case 2: return <DatabaseTab />;
-      case 3: return <CredentialsTab />;
     }
   }
 
@@ -48,9 +46,6 @@ export function DashPage() {
         </button>
         <button className={getBtnClass(2)} onClick={() => handleSwitchTab(2)}>
           <FontAwesomeIcon icon={faDiagramProject} /> Database
-        </button>
-        <button className={getBtnClass(3)} onClick={() => handleSwitchTab(3)}>
-          <FontAwesomeIcon icon={faLock} /> Credentials
         </button>
         <button className={styles.signOutBtn} onClick={handleSignOut}>
           <FontAwesomeIcon icon={faDoorOpen} /> Sign Out

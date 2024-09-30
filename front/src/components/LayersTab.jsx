@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { ToggleSwitch } from './ToggleSwitch.jsx';
 import styles from './LayersTab.module.css';
 
@@ -9,8 +9,37 @@ export function LayersTab() {
   const [layerThreeMatch, setLayerThreeMatch] = useState(false);
   const [layerThreeColor, setLayerThreeColor] = useState(false);
 
-  function handleSubmit() {
+  async function fetchData() {
+    let res = await fetch('http://localhost:8000/config/layers/', { method: 'GET' });
+    res = await res.json();
 
+    setLayerOne(res['data']['layer_one']);
+    setLayerTwo(res['data']['layer_two']);
+    setLayerThreeOrdering(res['data']['layer_three']['ordering']);
+    setLayerThreeMatch(res['data']['layer_three']['match']);
+    setLayerThreeColor(res['data']['layer_three']['colors']);
+  };
+
+  useEffect(() => {
+    fetchData().catch(console.error);
+  }, []);
+
+  async function handleSubmit() {
+    if (![layerOne, layerTwo, layerThreeOrdering, layerThreeMatch, layerThreeColor].some(x => x)) {
+      alert('at least one layer must be enabled!')
+    }
+    else {
+      const payload = JSON.stringify({
+        layer_one: layerOne,
+        layer_two: layerTwo,
+        layer_three: {
+          ordering: layerThreeOrdering,
+          match: layerThreeMatch,
+          colors: layerThreeColor
+        }
+      });
+      await fetch('http://localhost:8000/config/layers/', { method: 'POST', body: payload });
+    }
   }
 
   return (
