@@ -36,7 +36,7 @@ def random_click(actions, low_x, low_y, high_x, high_y, ref_element):
         actions.click(ref_element).perform()
 
 def home_page(driver, actions):
-    random_click(actions, -10, -5, 10, 5, get_element(driver, "a[class*='loginBtn']"))
+    random_click(actions, -10, -5, 10, 5, get_element(driver, "a[class*='userLoginBtn']"))
 
 def aadhar_entry(driver, actions):
     random_click(actions, -10, -5, 10, 5, get_element(driver, "input[class*='aadharInp']"))

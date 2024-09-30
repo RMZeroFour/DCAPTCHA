@@ -13,7 +13,7 @@ import matplotlib.pyplot as plt
 from dotenv import load_dotenv
 load_dotenv(override=True)
 mongo_uri = environ.get("MONGO_URI")
-captcha_digits = environ.get("CAPTCHA_DIGITS")
+captcha_digits = int(environ.get("CAPTCHA_DIGITS"))
 try:
     client = MongoClient(mongo_uri)
 except Exception as e:
@@ -132,7 +132,7 @@ async def get_captcha_image():
     return {
         "Status": "Success",
         "image": data_uri,
-        "answer": '478'
+        "answer": answer
     }
 
 
@@ -228,7 +228,7 @@ async def collect_layer_3_data(req: Request):
     except Exception as e:
         return {"Status": "Error", "message": str(e)}
 
-@app.get("/config/layers")
+@app.get("/config/layers/")
 async def get_config():
     try :
         with open("layers_config.json", "r") as file:
@@ -237,7 +237,7 @@ async def get_config():
     except Exception as e:
         return {"Status": "Error", "message": str(e)}
 
-@app.post("/config/layers")
+@app.post("/config/layers/")
 async def update_config(req: Request):
     try :
         data = await req.json()
@@ -247,7 +247,7 @@ async def update_config(req: Request):
     except Exception as e:
         return {"Status": "Error", "message": str(e)}
 
-@app.get("/config/data_collection")
+@app.get("/config/data_collection/")
 async def get_config():
     try :
         with open("data_collection_config.json", "r") as file:
@@ -256,7 +256,7 @@ async def get_config():
     except Exception as e:
         return {"Status": "Error", "message": str(e)}
 
-@app.post("/config/data_collection")
+@app.post("/config/data_collection/")
 async def update_config(req: Request):
     try :
         data = await req.json()

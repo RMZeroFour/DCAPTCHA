@@ -65,7 +65,7 @@ DEVICE_FAMILY_ENCODER_LAYER_1.classes_ = np.load('../model/Level _1/device_famil
 def model_inference_layer_1(time_taken,typing_speed,mouse_distance,country,state,is_proxy,is_abuser,user_agent):
     country = COUNTRY_ENCODER_LAYER_1.transform([country])[0]
     state = STATE_ENCODER_LAYER_1.transform([state])[0]
-    is_proxy = PROXY_ENCODER_LAYER_1.transform([is_proxy])[0]
+    is_proxy = PROXY_ENCODER_LAYER_1.transform(['false'])[0]
     is_abuser = 1 if is_abuser else 0
     ua = parse_user_agent(user_agent)
     browser_family = BROWSER_FAMILY_ENCODER_LAYER_1.transform([ua['browser_family']])[0]
@@ -115,7 +115,7 @@ DEVICE_FAMILY_ENCODER_LAYER_2.classes_ = np.load('../model/Level_2/device_family
 def model_inference_layer_2(time_taken,mouse_distance,country,state,is_proxy,is_abuser,user_agent,is_solved):
     country = COUNTRY_ENCODER_LAYER_2.transform([country])[0]
     state = STATE_ENCODER_LAYER_2.transform([state])[0]
-    is_proxy = PROXY_ENCODER_LAYER_2.transform([is_proxy])[0]
+    is_proxy = PROXY_ENCODER_LAYER_2.transform(['false'])[0]
     is_abuser = 1 if is_abuser else 0
     ua = parse_user_agent(user_agent)
     browser_family = BROWSER_FAMILY_ENCODER_LAYER_2.transform([ua['browser_family']])[0]
@@ -168,7 +168,7 @@ PROBLEM_TYPE_ENCODER_LAYER_3.classes_ = np.load('../model/Level_3/problem_solved
 def model_inference_layer_3(time_taken,mouse_distance,country,state,is_proxy,is_abuser,user_agent,problem_type):
     country = COUNTRY_ENCODER_LAYER_3.transform([country])[0]
     state = STATE_ENCODER_LAYER_3.transform([state])[0]
-    is_proxy = PROXY_ENCODER_LAYER_3.transform([is_proxy])[0]
+    is_proxy = PROXY_ENCODER_LAYER_3.transform(['false'])[0]
     is_abuser = 1 if is_abuser else 0
     ua = parse_user_agent(user_agent)
     browser_family = BROWSER_FAMILY_ENCODER_LAYER_3.transform([ua['browser_family']])[0]
