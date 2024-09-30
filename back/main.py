@@ -41,6 +41,7 @@ async def get_predictions_layer_one(req: Request):
     is_proxy = data['is_proxy']
     is_abuser = data['is_abuser']
     user_agent = data['user-agent']
+
     database = client.flow_data
     collection = database.layer_data
 
